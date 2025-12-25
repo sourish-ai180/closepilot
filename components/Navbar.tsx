@@ -4,7 +4,9 @@ import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../firebase";
 import Button from "./Button";
 
-// Fixed Page type to include all valid navigation routes used across the application
+/* ================================
+   Page Routes
+================================ */
 export type Page =
   | "landing"
   | "features"
@@ -26,72 +28,94 @@ interface NavbarProps {
   onNavigate: (page: Page) => void;
 }
 
+/* ================================
+   Demo User (Optional)
+================================ */
 interface LocalUser {
   email: string;
   name: string;
   plan: string;
-  isDemo?: boolean;
+  isDemo: true;
 }
 
+/* ================================
+   Navbar Component
+================================ */
 const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [localUser, setLocalUser] = useState<LocalUser | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
-  /* Scroll effect */
+  /* ================================
+     Scroll Effect
+  ================================ */
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  /* Auth listener and Local Sync */
+  /* ================================
+     Firebase Auth Listener (CRITICAL)
+  ================================ */
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setFirebaseUser(user);
+      setAuthLoading(false); // 🔥 prevents logout flash
     });
 
-    // Also check for a demo session in localStorage
-    const checkLocalSession = () => {
-      const stored = localStorage.getItem('closepilot_user');
-      if (stored) {
-        try {
-          setLocalUser(JSON.parse(stored));
-        } catch (e) {
-          console.error("Failed to parse local user", e);
-        }
-      } else {
-        setLocalUser(null);
-      }
-    };
-
-    checkLocalSession();
-    // Listen for changes in other tabs (optional but good for SPA)
-    window.addEventListener('storage', checkLocalSession);
-    
-    return () => {
-      unsubscribe();
-      window.removeEventListener('storage', checkLocalSession);
-    };
+    return () => unsubscribe();
   }, []);
 
+  /* ================================
+     Demo Session (Optional)
+  ================================ */
+  useEffect(() => {
+    const stored = localStorage.getItem("closepilot_user");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (parsed?.isDemo) {
+          setLocalUser(parsed);
+        }
+      } catch {
+        setLocalUser(null);
+      }
+    }
+  }, []);
+
+  /* ================================
+     Logout
+  ================================ */
   const handleLogout = async () => {
     await signOut(auth);
-    localStorage.removeItem('closepilot_user');
+    localStorage.removeItem("closepilot_user");
     setLocalUser(null);
     onNavigate("landing");
   };
 
+  /* ================================
+     Derived User (SAFE)
+  ================================ */
+  const currentUser = firebaseUser ?? localUser;
+  const userEmail = firebaseUser?.email ?? localUser?.email;
+
+  /* ================================
+     Prevent Auth Flicker
+  ================================ */
+  if (authLoading) return null;
+
+  /* ================================
+     Nav Links
+  ================================ */
   const navLinks: { label: string; page: Page }[] = [
     { label: "Features", page: "features" },
     { label: "Pricing", page: "pricing" },
     { label: "Templates", page: "templates" },
   ];
-
-  // Derive active user
-  const currentUser = firebaseUser || localUser;
-  const userEmail = firebaseUser?.email || localUser?.email;
 
   return (
     <nav
@@ -103,54 +127,51 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between items-center">
-          
-          {/* Logo - Matches Dashboard Sidebar Animation */}
+
+          {/* LOGO */}
           <div
-            className="flex items-center gap-3 cursor-pointer shrink-0 group transition-all duration-500 hover:scale-105"
             onClick={() => onNavigate("landing")}
+            className="flex items-center gap-3 cursor-pointer group hover:scale-105 transition"
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent-indigo to-accent-mint flex items-center justify-center shadow-lg transition-all duration-500 group-hover:scale-110">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent-indigo to-accent-mint flex items-center justify-center shadow-lg group-hover:scale-110 transition">
               <Sparkles className="w-5 h-5 text-white" />
             </div>
-            <span className="font-display font-bold text-xl tracking-tight text-white transition-colors duration-300 group-hover:text-accent-mint">
+            <span className="font-display font-bold text-xl text-white">
               ClosePilot
             </span>
           </div>
 
-          {/* Center Navigation (Desktop) */}
-          <div className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+          {/* CENTER NAV (DESKTOP) */}
+          <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((item) => (
               <button
                 key={item.label}
                 onClick={() => onNavigate(item.page)}
-                className="relative group text-sm font-medium text-gray-300 hover:text-white transition-colors duration-300"
+                className="text-sm font-medium text-gray-300 hover:text-white transition"
               >
                 {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-indigo to-accent-mint group-hover:w-full transition-all duration-300 ease-out rounded-full opacity-0 group-hover:opacity-100" />
               </button>
             ))}
 
             {currentUser && (
               <button
                 onClick={() => onNavigate("dashboard")}
-                className="relative group text-sm font-medium text-gray-300 hover:text-white transition-colors duration-300"
+                className="text-sm font-medium text-gray-300 hover:text-white transition"
               >
                 Dashboard
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-indigo to-accent-mint group-hover:w-full transition-all duration-300 ease-out rounded-full opacity-0 group-hover:opacity-100" />
               </button>
             )}
           </div>
 
-          {/* Right Actions (Desktop) */}
+          {/* RIGHT ACTIONS (DESKTOP) */}
           <div className="hidden md:flex items-center gap-4">
             {!currentUser ? (
               <>
                 <button
                   onClick={() => onNavigate("login")}
-                  className="relative group text-sm font-medium text-gray-300 hover:text-white transition-colors duration-300"
+                  className="text-sm text-gray-300 hover:text-white"
                 >
                   Log In
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-indigo to-accent-mint group-hover:w-full transition-all duration-300 ease-out rounded-full opacity-0 group-hover:opacity-100" />
                 </button>
                 <Button
                   variant="primary"
@@ -162,27 +183,32 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
               </>
             ) : (
               <>
-                <div className="flex items-center gap-2 mr-2">
-                  <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center">
                     <UserIcon size={14} className="text-accent-indigo" />
                   </div>
-                  <span className="text-xs text-gray-400 max-w-[120px] truncate font-medium">
-                    {userEmail} {localUser?.isDemo && <span className="text-[9px] text-accent-mint border border-accent-mint/30 px-1 rounded uppercase">Demo</span>}
+                  <span className="text-xs text-gray-400 max-w-[140px] truncate">
+                    {userEmail}
+                    {localUser?.isDemo && (
+                      <span className="ml-1 text-[9px] text-accent-mint border px-1 rounded">
+                        DEMO
+                      </span>
+                    )}
                   </span>
                 </div>
+
                 <button
                   onClick={handleLogout}
-                  className="relative group flex items-center gap-1 text-sm text-red-400 hover:text-red-300 transition-colors duration-300"
+                  className="flex items-center gap-1 text-sm text-red-400 hover:text-red-300"
                 >
                   <LogOut size={16} />
                   Logout
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-400 group-hover:w-full transition-all duration-300 ease-out rounded-full opacity-0 group-hover:opacity-100" />
                 </button>
               </>
             )}
           </div>
 
-          {/* Mobile Toggle */}
+          {/* MOBILE TOGGLE */}
           <button
             className="md:hidden text-gray-300"
             onClick={() => setIsOpen(!isOpen)}
@@ -192,9 +218,9 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* MOBILE MENU */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-navy-900/95 backdrop-blur-lg border-b border-white/10 p-4 flex flex-col gap-4 animate-slide-up shadow-2xl">
+        <div className="md:hidden absolute top-full w-full bg-navy-900/95 backdrop-blur-lg p-4 flex flex-col gap-4">
           {navLinks.map((item) => (
             <button
               key={item.label}
@@ -202,7 +228,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
                 onNavigate(item.page);
                 setIsOpen(false);
               }}
-              className="text-lg font-medium text-gray-300 hover:text-white block py-2 text-left transition-colors"
+              className="text-lg text-gray-300 hover:text-white"
             >
               {item.label}
             </button>
@@ -214,7 +240,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
                 onNavigate("dashboard");
                 setIsOpen(false);
               }}
-              className="text-lg font-medium text-gray-300 hover:text-white block py-2 text-left transition-colors"
+              className="text-lg text-gray-300 hover:text-white"
             >
               Dashboard
             </button>
@@ -229,13 +255,13 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
                   onNavigate("login");
                   setIsOpen(false);
                 }}
-                className="text-lg font-medium text-gray-300 hover:text-white block py-2 text-left transition-colors"
+                className="text-lg text-gray-300 hover:text-white"
               >
                 Log In
               </button>
               <Button
                 variant="primary"
-                className="w-full justify-center"
+                className="w-full"
                 onClick={() => {
                   onNavigate("signup");
                   setIsOpen(false);
@@ -247,7 +273,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
           ) : (
             <button
               onClick={handleLogout}
-              className="text-lg font-medium text-red-400 hover:text-red-300 block py-2 text-left transition-colors"
+              className="text-lg text-red-400 hover:text-red-300"
             >
               Logout
             </button>
