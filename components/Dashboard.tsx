@@ -5,7 +5,7 @@ import {
   MoreVertical, Edit3, Copy, Download, LogOut, Lock, Wand2, Send, ArrowLeft, Calendar, 
   DollarSign, Gavel, Trash2, GripVertical, PlusCircle, CreditCard, ShieldCheck, History, ExternalLink, Loader2, Palette, CheckCircle2,
   Briefcase, Star, Eye, MousePointer2, Share2, Printer, CheckCircle, AlertCircle, Rocket, Target, Zap, Filter, User, Shield, Calculator, Globe, TrendingUp, Users,
-  Layers, Lightbulb, FilePlus, ZapOff, PlayCircle, Upload, Save, Check, Info, Phone, Mail, Link as LinkIcon, Camera, BellRing, Smartphone, LayoutGrid
+  Layers, Lightbulb, FilePlus, ZapOff, PlayCircle, Upload, Save, Check, Info, Phone, Mail, Link as LinkIcon, Camera, BellRing, Smartphone
 } from 'lucide-react';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
@@ -146,14 +146,14 @@ const TEMPLATE_MAP: Record<string, TemplateConfig> = {
 const SidebarLink = ({ icon: Icon, label, active, onClick }: { icon: any, label: string, active: boolean, onClick: () => void }) => (
   <button 
     onClick={onClick}
-    className={`w-full flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-300 group ${
+    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-300 border group ${
       active 
-        ? 'bg-gradient-to-r from-[#5D5FEF] to-[#7C3AED] text-white shadow-lg shadow-accent-indigo/30' 
-        : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.03]'
+        ? 'bg-accent-indigo text-white border-accent-indigo shadow-lg shadow-accent-indigo/20' 
+        : 'border-transparent text-gray-500 hover:text-white hover:bg-white/[0.05] hover:border-white/10'
     }`}
   >
     <Icon size={18} className={`transition-all duration-300 ${active ? 'text-white' : 'group-hover:text-accent-indigo'}`} />
-    <span className={`text-[13px] font-bold`}>{label}</span>
+    <span className={`text-[13px] font-medium`}>{label}</span>
   </button>
 );
 
@@ -219,35 +219,30 @@ const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
 const CreationCard = ({ icon: Icon, title, desc, btnText, color, btnColor, onClick }: any) => (
   <div 
     onClick={onClick}
-    className={`p-10 rounded-3xl bg-[#13161F] border border-white/5 hover:border-accent-indigo/30 hover:shadow-[0_0_50px_rgba(93,95,239,0.15)] transition-all duration-700 ease-in-out cursor-pointer group relative overflow-hidden`}
+    className={`p-10 rounded-3xl bg-[#13161F] border border-white/5 hover:border-${color}/50 transition-all duration-300 ease-in-out cursor-pointer group relative overflow-hidden`}
   >
-    <div className={`absolute top-0 right-0 w-32 h-32 bg-accent-indigo/5 blur-3xl -mr-16 -mt-16 group-hover:bg-accent-indigo/10 transition-all duration-1000`} />
-    <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 text-gray-400 group-hover:scale-110 transition-all duration-500 group-hover:text-white group-hover:border-white/20`}>
+    <div className={`absolute top-0 right-0 w-32 h-32 bg-${color}/5 blur-3xl -mr-16 -mt-16 group-hover:bg-${color}/10 transition-all duration-500`} />
+    <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 text-gray-400 group-hover:scale-110 transition-transform duration-300 group-hover:text-white group-hover:border-white/20`}>
       <Icon size={28} />
     </div>
-    <h3 className="text-2xl font-bold mb-4 group-hover:text-white transition-colors duration-500">{title}</h3>
+    <h3 className="text-2xl font-bold mb-4 group-hover:text-white transition-colors duration-300">{title}</h3>
     <p className="text-gray-400 text-sm leading-relaxed mb-10">{desc}</p>
-    <button className={`px-6 py-3 rounded-xl ${btnColor || 'bg-accent-indigo'} text-white font-bold text-xs shadow-lg flex items-center gap-2 transition-all duration-500 border border-white/5 hover:border-white/20 group-hover:scale-105 group-hover:shadow-indigo/20`}>
-      {btnText} <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform duration-500" />
+    <button className={`px-6 py-3 rounded-xl ${btnColor || 'bg-accent-indigo'} text-white font-bold text-xs shadow-lg flex items-center gap-2 transition-all duration-300 border border-white/5 hover:border-white/20 group-hover:scale-105 group-hover:shadow-${color}/20`}>
+      {btnText} <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform duration-300" />
     </button>
   </div>
 );
 
 const StarterMission = ({ icon: Icon, title, desc, btnText, color, bg, onClick }: any) => (
-  <div 
-    onClick={onClick}
-    className={`p-10 ${bg} hover:bg-white/[0.05] transition-all duration-700 ease-in-out group flex flex-col items-center text-center cursor-pointer relative overflow-hidden border-r border-white/5 last:border-r-0`}
-  >
-    {/* Smooth Hover Overlay */}
-    <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-    
-    <div className={`w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:border-white/20 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] transition-all duration-700 ease-in-out ${color}`}>
-      <Icon size={36} strokeWidth={2.5} />
+  <div className={`p-10 ${bg} hover:bg-white/[0.02] transition-all duration-300 ease-in-out group flex flex-col items-center text-center cursor-pointer`}>
+    <div className={`w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 ease-in-out ${color} group-hover:border-white/20`}>
+      <Icon size={28} />
     </div>
-    <h4 className="font-bold text-xl mb-3 text-gray-200 group-hover:text-white transition-colors duration-500 tracking-tight">{title}</h4>
-    <p className="text-sm text-gray-600 mb-10 max-w-[240px] group-hover:text-gray-400 transition-colors duration-500 leading-relaxed font-medium">{desc}</p>
+    <h4 className="font-bold text-lg mb-3 group-hover:text-white transition-colors duration-300">{title}</h4>
+    <p className="text-sm text-gray-500 mb-8 max-w-[200px] group-hover:text-gray-400">{desc}</p>
     <button 
-      className={`px-10 py-3 rounded-xl bg-white text-navy-900 font-black text-[11px] uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(0,0,0,0.4)] transition-all duration-500 hover:bg-gray-100 hover:scale-[1.05] hover:shadow-white/5 active:scale-95`}
+      onClick={onClick}
+      className={`px-6 py-2.5 rounded-xl bg-white text-navy-900 font-bold text-xs hover:bg-gray-200 transition-all duration-300 shadow-xl`}
     >
       {btnText}
     </button>
@@ -993,211 +988,183 @@ const SettingsPanel = ({ onManageBilling }: any) => {
   );
 };
 
-const DashboardHome = ({
-  proposals,
-  onNavigate,
-  onUseTemplate,
-  onViewProposal
-}: {
-  proposals: ProposalData[];
-  onNavigate: (tab: DashboardTab) => void;
-  onUseTemplate: (id: string) => void;
-  onViewProposal: (p: ProposalData) => void;
-}) => (
-  <div className="p-8 space-y-14 animate-slide-up">
-
-    {/* === HERO DASHBOARD CARDS (LANDING STYLE) === */}
-<div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-8">
-
-  {/* === PRIMARY CARD : NEW PROPOSAL === */}
-  <div
-    onClick={() => onNavigate('new-proposal')}
-    className="group cursor-pointer h-[435px] rounded-3xl glass border border-white/10
-    flex flex-col items-center justify-center text-center p-10
-    transition-all duration-500 ease-out
-    hover:translate-y-[-4px]
-    hover:border-accent-indigo/40
-    hover:shadow-[0_0_60px_-10px_rgba(93,95,239,0.35)]"
-  >
-    <div
-      className="w-20 h-20 rounded-full bg-gradient-to-tr from-accent-indigo to-accent-purple
-      flex items-center justify-center mb-8 shadow-2xl
-      transition-all duration-500 ease-out
-      group-hover:scale-110
-      group-hover:shadow-[0_0_40px_rgba(93,95,239,0.6)]"
-    >
-      <Plus size={40} className="text-white stroke-[3]" />
-    </div>
-
-    <h3 className="text-3xl font-display font-bold text-white mb-3">
-      New Proposal
-    </h3>
-
-    <p className="text-gray-400 text-[15px] leading-relaxed max-w-[260px] mb-10">
-      Generate a client-ready proposal<br />in under 2 minutes
-    </p>
-
-    <div
-      className="inline-flex items-center gap-3 px-12 py-4 rounded-full
-      border border-white/10 bg-white/5 text-accent-indigo
-      font-bold text-[13px] uppercase tracking-[0.25em]
-      transition-all duration-300 ease-out
-      group-hover:bg-white/10 group-hover:text-white group-hover:translate-y-[-2px]"
-    >
-      Launch Wizard <ArrowRight className="w-4 h-4" />
-    </div>
-  </div>
-
-  {/* === RIGHT STACKED CARDS === */}
-  <div className="flex flex-col gap-8">
-
-    {/* PRICING ENGINE */}
-    <div
-      onClick={() => onNavigate('pricing-engine')}
-      className="group cursor-pointer glass border border-white/5 rounded-3xl p-8
-      transition-all duration-500 ease-out
-      hover:translate-y-[-3px]
-      hover:border-accent-mint/40
-      hover:shadow-[0_0_40px_rgba(110,231,183,0.15)]"
-    >
-      <div
-        className="w-12 h-12 rounded-2xl bg-accent-mint/10
-        flex items-center justify-center mb-6
-        transition-transform duration-300 ease-out
-        group-hover:scale-110"
-      >
-        <Calculator size={24} className="text-accent-mint" />
+const DashboardHome = ({ proposals, onNavigate, onUseTemplate, onViewProposal }: { proposals: ProposalData[], onNavigate: (tab: DashboardTab) => void, onUseTemplate: (id: string) => void, onViewProposal: (p: ProposalData) => void }) => (
+  <div className="p-8 space-y-8 animate-slide-up">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="rounded-2xl p-6 bg-[#13161F] border border-white/5 flex flex-col justify-between min-h-[200px] shadow-xl transition-all duration-300 hover:border-white/10">
+        <div>
+          <h2 className="text-xl font-bold mb-3 flex items-center gap-2">Dashboard Home 🏠</h2>
+          <p className="text-[13px] text-gray-400 leading-relaxed max-w-[240px]">
+            {proposals.length > 0 
+              ? `You have ${proposals.length} active proposals gaining traction.`
+              : "Ready to land your next big client?"}
+          </p>
+        </div>
+        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+          <div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+            Current Plan: <span className="text-white">PRO</span>
+          </div>
+          <button onClick={() => onNavigate('analytics')} className="text-[11px] font-bold text-accent-indigo flex items-center gap-1 hover:underline transition-all duration-300">
+            View Analytics <ChevronRight size={14} />
+          </button>
+        </div>
       </div>
 
-      <h4 className="text-[19px] font-bold text-white mb-2">
-        Smart Pricing Engine
-      </h4>
-
-      <p className="text-[15px] text-gray-500">
-        Automatically calculates pricing based on scope and location.
-      </p>
-    </div>
-
-    {/* PRO TEMPLATES */}
-    <div
-      onClick={() => onNavigate('templates')}
-      className="group cursor-pointer glass border border-white/5 rounded-3xl p-8
-      transition-all duration-500 ease-out
-      hover:translate-y-[-3px]
-      hover:border-accent-purple/40
-      hover:shadow-[0_0_40px_rgba(167,139,250,0.15)]"
-    >
-      <div
-        className="w-12 h-12 rounded-2xl bg-accent-purple/10
-        flex items-center justify-center mb-6
-        transition-transform duration-300 ease-out
-        group-hover:scale-110"
-      >
-        <LayoutGrid size={24} className="text-accent-purple" />
+      <div className="rounded-2xl p-6 bg-[#13161F] border border-white/5 flex flex-col min-h-[200px] shadow-xl transition-all duration-300 hover:border-white/10">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+            PERFORMANCE INSIGHTS <span className="w-1.5 h-1.5 rounded-full bg-accent-indigo animate-pulse shadow-[0_0_5px_#5D5FEF]"></span>
+          </h3>
+          <MoreHorizontal size={16} className="text-gray-600 hover:text-white cursor-pointer" />
+        </div>
+        <div className="flex flex-col items-center justify-center flex-1 text-center">
+          <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-3 transition-all duration-300 hover:scale-110 border border-transparent hover:border-white/10">
+            <BarChart size={18} className="text-gray-600" />
+          </div>
+          <h4 className="text-[13px] font-bold text-white mb-1">Awaiting Data</h4>
+        </div>
       </div>
 
-      <h4 className="text-[19px] font-bold text-white mb-2">
-        Expert Templates
-      </h4>
-
-      <p className="text-[15px] text-gray-500 mb-4">
-        Marketing • Design • Tech • Creative
-      </p>
-
-      <span className="text-[10px] uppercase font-bold text-accent-purple">
-        50+ templates available
-      </span>
+      <div 
+        onClick={() => onNavigate('new-proposal')}
+        className="rounded-2xl p-6 bg-[#13161F]/40 border border-white/5 flex flex-col items-center justify-center text-center group cursor-pointer hover:border-accent-indigo/50 hover:scale-[1.03] transition-all duration-300 shadow-xl"
+      >
+        <div className="w-12 h-12 rounded-full bg-accent-indigo flex items-center justify-center mb-4 shadow-lg shadow-accent-indigo/10 group-hover:scale-110 transition-transform duration-300 group-hover:shadow-accent-indigo/15">
+          <Plus size={24} className="text-white" />
+        </div>
+        <h3 className="text-lg font-bold text-white mb-1">New Proposal</h3>
+      </div>
     </div>
 
-  </div>
-</div>
+    <div className="space-y-4">
+      <div className="flex items-end justify-between">
+        <h3 className="text-base font-bold text-gray-300">Start from a Template</h3>
+        <button onClick={() => onNavigate('templates')} className="text-[11px] font-bold text-gray-500 hover:text-accent-indigo transition-colors duration-300">View all</button>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        {Object.values(TEMPLATE_MAP).map(t => (
+          <TemplateItem 
+            key={t.id} 
+            icon={t.icon} 
+            label={t.label} 
+            cat={t.cat} 
+            color={t.color} 
+            bg={t.bg} 
+            onClick={() => onUseTemplate(t.id)}
+          />
+        ))}
+      </div>
+    </div>
 
-
-    {/* === ONBOARDING: YOUR SUCCESS MISSION === */}
-    <div className="rounded-[3rem] border border-white/5 bg-[#12161F]/50 overflow-hidden shadow-2xl transition-all duration-700 hover:border-white/10">
-      <div className="px-10 py-8 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
-        <h3 className="font-black text-xl flex items-center gap-2 text-white">
+    <div className="rounded-3xl border border-white/5 bg-[#13161F] overflow-hidden shadow-2xl transition-all duration-300 hover:border-white/10">
+      <div className="px-8 py-6 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+        <h3 className="font-bold text-[16px] flex items-center gap-2">
           Your Success Mission
-          <span className="text-[11px] bg-accent-indigo/20 text-accent-indigo px-3 py-1 rounded-full uppercase tracking-widest ml-4 animate-pulse font-black border border-accent-indigo/30">
-            ONBOARDING
-          </span>
+          <span className="text-[10px] bg-accent-indigo/20 text-accent-indigo px-2 py-0.5 rounded-full uppercase tracking-tighter ml-2 animate-pulse font-black">ONBOARDING</span>
         </h3>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 divide-x divide-white/5">
-        <StarterMission
-          icon={Rocket}
-          title="First Proposal"
-          desc="Generate a professional draft in seconds."
-          btnText="Launch Wizard"
-          color="text-blue-400"
-          bg="bg-transparent"
-          onClick={() => onNavigate('new-proposal')}
-        />
-        <StarterMission
-          icon={Target}
-          title="Smart Rates"
-          desc="Configure your pricing engine fundamentals."
-          btnText="Launch Engine"
-          color="text-accent-indigo"
-          bg="bg-transparent"
-          onClick={() => onNavigate('pricing-engine')}
-        />
-        <StarterMission
-          icon={Zap}
-          title="Brand Sync"
-          desc="Upload your branding assets for auto-sync."
-          btnText="Launch Sync"
-          color="text-accent-mint"
-          bg="bg-transparent"
-          onClick={() => onNavigate('brand-sync')}
-        />
+      
+      <div className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-0 divide-x divide-white/5">
+          <StarterMission 
+            icon={Rocket} 
+            title="First Proposal" 
+            desc="Generate a professional draft in seconds."
+            btnText="Launch Wizard"
+            color="text-blue-400"
+            bg="bg-blue-400/5"
+            onClick={() => onNavigate('new-proposal')}
+          />
+          <StarterMission 
+            icon={Target} 
+            title="Smart Rates" 
+            desc="Configure your pricing engine."
+            btnText="Launch Engine"
+            color="text-accent-indigo"
+            bg="bg-accent-indigo/5"
+            onClick={() => onNavigate('pricing-engine')}
+          />
+          <StarterMission 
+            icon={Zap} 
+            title="Brand Sync" 
+            desc="Upload your branding assets."
+            btnText="Launch Sync"
+            color="text-accent-mint"
+            bg="bg-accent-mint/5"
+            onClick={() => onNavigate('brand-sync')}
+          />
+        </div>
       </div>
     </div>
-
-    {/* === RECENT ACTIVITY === */}
-    <div className="space-y-6">
-      <div className="flex items-end justify-between px-2">
-        <h3 className="text-lg font-bold text-gray-300">Recent Activity</h3>
-        <button
-          onClick={() => onNavigate('saved')}
-          className="text-xs font-bold text-gray-500 hover:text-accent-indigo transition-colors flex items-center gap-1"
-        >
-          View all <ArrowRight size={14} />
-        </button>
-      </div>
-
-      <div className="rounded-[2rem] border border-white/5 bg-[#13161F] overflow-hidden shadow-2xl">
-        {proposals.length > 0 ? (
-          <table className="w-full">
-            <tbody className="divide-y divide-white/5">
-              {proposals.slice(0, 3).map((p) => (
-                <ActivityRow
-                  key={p.id}
-                  title={p.title}
-                  client={p.client}
-                  value={p.value}
-                  status={p.status}
-                  time={p.time}
-                  onView={() => onViewProposal(p)}
-                />
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <div className="py-12 flex flex-col items-center text-center opacity-40">
-            <FileText size={32} className="mb-3 text-gray-600" />
-            <p className="text-sm font-medium text-gray-500">
-              No active proposals found.
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-
   </div>
 );
 
+const ProposalDetailView = ({ proposal, onBack }: { proposal: ProposalData, onBack: () => void }) => {
+  return (
+    <div className="h-full flex flex-col animate-slide-up bg-[#0B0F19]">
+      <div className="px-8 py-4 border-b border-white/5 flex items-center justify-between bg-white/[0.01]">
+        <div className="flex items-center gap-4">
+          <button onClick={onBack} className="p-2 hover:bg-white/5 rounded-lg text-gray-400 transition-all duration-300 hover:text-white hover:scale-110">
+            <ArrowLeft size={20} />
+          </button>
+          <h2 className="font-bold">{proposal.title}</h2>
+        </div>
+        <div className="flex gap-3">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/5 hover:bg-white/5 hover:border-white/20 text-sm font-bold text-gray-300 transition-all duration-300">
+            <Download size={16} /> Export PDF
+          </button>
+          <button className="flex items-center gap-2 px-6 py-2 rounded-xl bg-accent-indigo text-white text-sm font-bold hover:shadow-lg hover:shadow-accent-indigo/10 transition-all duration-300 hover:scale-105">
+            <Send size={16} /> Send to Client
+          </button>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-12 flex justify-center bg-white/[0.01]">
+        <div className="w-full max-w-3xl bg-white p-12 md:p-16 text-navy-900 shadow-2xl min-h-[1000px] rounded-sm transition-shadow duration-500 hover:shadow-accent-indigo/5">
+          <header className="flex justify-between items-start mb-16">
+             <div>
+               <div className="w-12 h-12 rounded-lg bg-accent-indigo flex items-center justify-center mb-6 shadow-lg shadow-accent-indigo/20 transition-transform duration-500 hover:rotate-6">
+                 <Sparkles size={24} className="text-white" />
+               </div>
+               <h1 className="text-4xl font-display font-extrabold tracking-tight mb-2">Proposal for {proposal.client}</h1>
+               <p className="text-gray-500 text-sm font-medium">{proposal.category} Strategy & Execution • 2026</p>
+             </div>
+             <div className="text-right">
+               <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Total Investment</p>
+               <p className="text-2xl font-black text-navy-900">{proposal.value}</p>
+               <div className="mt-4">
+                 <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border transition-colors duration-300 ${proposal.status === 'Sent' ? "text-blue-500 border-blue-100 bg-blue-50 hover:bg-blue-100" : "text-green-500 border-green-100 bg-green-50 hover:bg-green-100"}`}>
+                   {proposal.status}
+                 </span>
+               </div>
+             </div>
+          </header>
+
+          <section className="space-y-12">
+            <div>
+              <h2 className="text-xl font-bold text-accent-indigo border-b border-gray-100 pb-3 mb-6 uppercase tracking-wider">01. Executive Summary</h2>
+              <p className="text-gray-700 leading-relaxed text-sm">
+                Based on our initial discovery phase for the {proposal.category} needs of {proposal.client}, this proposal outlines a comprehensive strategy designed to maximize ROI through intelligent market positioning.
+              </p>
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-accent-indigo border-b border-gray-100 pb-3 mb-6 uppercase tracking-wider">02. Scope of Work</h2>
+              <ul className="space-y-4 text-sm text-gray-600">
+                <li className="flex items-start gap-3 group"><CheckCircle2 className="w-5 h-5 text-accent-indigo shrink-0 transition-transform duration-300 group-hover:scale-110" /> Full audit of existing digital assets and performance metrics.</li>
+                <li className="flex items-start gap-3 group"><CheckCircle2 className="w-5 h-5 text-accent-indigo shrink-0 transition-transform duration-300 group-hover:scale-110" /> Execution of core deliverables as specified in the service agreement.</li>
+                <li className="flex items-start gap-3 group"><CheckCircle2 className="w-5 h-5 text-accent-indigo shrink-0 transition-transform duration-300 group-hover:scale-110" /> Monthly reporting and optimization sessions.</li>
+              </ul>
+            </div>
+            <div className="pt-8 border-t border-gray-100 flex justify-between items-center">
+               <p className="text-[10px] text-gray-400 italic">Generated by ClosePilot Intelligence • March 2026</p>
+               <div className="w-32 h-10 border-b border-gray-200 flex items-end justify-center text-[10px] text-gray-300 transition-colors duration-300 hover:border-accent-indigo/30 hover:text-gray-400 cursor-text">Client Signature</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const TemplateWizard = ({ config, onBack }: { config: TemplateConfig, onBack: () => void }) => {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -1340,31 +1307,13 @@ const TemplateWizard = ({ config, onBack }: { config: TemplateConfig, onBack: ()
   );
 };
 
-const ProposalDetailView = ({ proposal, onBack }: { proposal: ProposalData, onBack: () => void }) => (
-  <div className="p-8 max-w-5xl mx-auto animate-slide-up">
-    <div className="flex items-center gap-4 mb-8">
-      <button onClick={onBack} className="p-2.5 hover:bg-white/5 rounded-xl text-gray-400 transition-all hover:text-white"><ArrowLeft /></button>
-      <div>
-        <h2 className="text-2xl font-bold">{proposal.title}</h2>
-        <p className="text-sm text-gray-500">Drafted for {proposal.client} on {proposal.time}</p>
-      </div>
-    </div>
-    <div className="glass p-12 rounded-3xl border border-white/5 min-h-[600px] flex items-center justify-center text-gray-600">
-      <div className="text-center">
-        <FileText size={48} className="mx-auto mb-4 opacity-20" />
-        <p>Proposal preview content would be rendered here.</p>
-      </div>
-    </div>
-  </div>
-);
-
 // --- MAIN DASHBOARD COMPONENT ---
 
 const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
   const [activeTab, setActiveTab] = useState<DashboardTab>('dashboard');
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
   const [viewingProposal, setViewingProposal] = useState<ProposalData | null>(null);
-  const [userName, setUserName] = useState('sourishkundu1122');
+  const [userName, setUserName] = useState('rickkundu22');
   const [proposals] = useState<ProposalData[]>([]);
 
   useEffect(() => {
@@ -1428,11 +1377,10 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#080B13] text-white font-sans flex overflow-hidden selection:bg-accent-indigo selection:text-white">
-      {/* SIDEBAR - Styled to match screenshot */}
-      <aside className="w-[280px] hidden lg:flex flex-col border-r border-white/5 bg-[#080B13] relative z-20">
+    <div className="min-h-screen bg-[#0B0F19] text-white font-sans flex overflow-hidden selection:bg-accent-indigo selection:text-white">
+      <aside className="w-64 hidden md:flex flex-col border-r border-white/5 bg-[#0B0F19] relative z-20">
         <div 
-          className="h-20 flex items-center px-8 border-b border-white/5 gap-3 cursor-pointer group transition-all duration-500 hover:scale-105"
+          className="h-20 flex items-center px-6 border-b border-white/5 gap-3 cursor-pointer group transition-all duration-500 hover:scale-105"
           onClick={onBack}
         >
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent-indigo to-accent-mint flex items-center justify-center shadow-lg transition-all duration-500 group-hover:scale-110">
@@ -1443,7 +1391,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
           </span>
         </div>
 
-        <nav className="flex-1 px-6 py-10 space-y-4">
+        <nav className="flex-1 px-4 py-6 space-y-1">
           <SidebarLink icon={Layout} label="Dashboard" active={activeTab === 'dashboard'} onClick={() => setActiveTab('dashboard')} />
           <SidebarLink icon={Plus} label="New Proposal" active={activeTab === 'new-proposal'} onClick={() => setActiveTab('new-proposal')} />
           <SidebarLink icon={FileText} label="Templates" active={activeTab === 'templates'} onClick={() => setActiveTab('templates')} />
@@ -1452,80 +1400,78 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
           <SidebarLink icon={Settings} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
         </nav>
 
-        <div className="p-8">
+        <div className="p-4">
+          <div className={`bg-[#13161F] rounded-xl p-4 border transition-all duration-300 ${activeTab === 'billing' ? 'border-accent-indigo bg-accent-indigo/5' : 'border-white/5'} mb-4`}>
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-xs font-bold text-white">Pro Plan</span>
+              <span className="text-[10px] text-accent-indigo font-bold uppercase">Active</span>
+            </div>
+            <div className="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+              <div className="bg-[#5D5FEF] w-full h-full rounded-full transition-all duration-500"></div>
+            </div>
+            <button 
+              onClick={() => setActiveTab('billing')}
+              className={`w-full mt-4 text-[11px] font-bold py-2 rounded-lg border transition-all duration-300 ${
+                activeTab === 'billing' 
+                ? 'bg-accent-indigo text-white border-accent-indigo shadow-[0_0_15px_rgba(93,95,239,0.2)]' 
+                : 'text-white bg-white/5 hover:bg-white/10 border-white/5'
+              }`}
+            >
+              Manage Billing
+            </button>
+          </div>
+          
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 transition-all duration-300"
+            className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-500 hover:text-white hover:bg-white/5 transition-all duration-300"
           >
-            <LogOut size={18} />
-            <span className="text-sm font-bold">Log out</span>
+            <LogOut size={16} />
+            <span className="text-sm font-medium">Log out</span>
           </button>
         </div>
       </aside>
 
-      {/* MAIN CONTENT AREA */}
-      <main className="flex-1 flex flex-col relative overflow-hidden bg-[#0A0D16]">
-        {/* HEADER - Precisely recreated from screenshot */}
-        <header className="h-[88px] border-b border-white/5 flex items-center justify-between px-10 bg-[#080B13] z-30">
-          {/* Breadcrumb - Fixed Redirection */}
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={onBack}
-              className="text-[14px] font-bold text-gray-600 hover:text-white transition-colors duration-300"
-            >
-              Home
-            </button>
-            <ChevronRight size={14} className="text-gray-800" />
-            <div className="border border-[#5D5FEF]/40 bg-[#5D5FEF]/5 px-4 py-1.5 rounded-lg shadow-[0_0_15px_rgba(93,95,239,0.1)]">
-              <span className="text-white font-black text-[14px] capitalize tracking-tight">
-                {activeTab === 'dashboard' ? 'Dashboard' : activeTab.replace('-', ' ')}
-              </span>
-            </div>
+      <main className="flex-1 flex flex-col relative overflow-hidden">
+        <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-[#0B0F19] z-30">
+          <div className="flex items-center gap-2 text-[13px] text-gray-500">
+            <span className="hover:text-white cursor-pointer transition-colors duration-300" onClick={() => setActiveTab('dashboard')}>Home</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+            <span className="text-white font-bold capitalize bg-white/5 px-2 py-0.5 rounded border border-white/10">{activeTab.replace('-', ' ')}</span>
           </div>
 
-          {/* Search Bar - Recreated */}
           <div className="flex-1 flex justify-center max-w-lg px-8">
             <div className="relative w-full group">
-              <Search className="w-4 h-4 text-gray-700 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-accent-indigo transition-colors duration-300" />
+              <Search className="w-4 h-4 text-gray-600 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-accent-indigo transition-colors duration-300" />
               <input 
                 type="text" 
-                placeholder="Search proposals" 
-                className="bg-[#111624] border border-white/5 rounded-full pl-12 pr-4 py-2.5 text-[13px] text-gray-400 focus:outline-none focus:border-accent-indigo/40 focus:ring-1 focus:ring-accent-indigo/10 w-full transition-all duration-300 placeholder:text-gray-700 shadow-inner"
+                placeholder="Search proposals..." 
+                className="bg-[#13161F] border border-white/5 rounded-full pl-10 pr-4 py-2 text-xs text-gray-400 focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 w-full transition-all duration-300"
               />
             </div>
           </div>
 
-          {/* Right Section Actions */}
-          <div className="flex items-center gap-8">
-            <button className="relative text-gray-500 hover:text-white transition-all duration-300 hover:scale-110">
+          <div className="flex items-center gap-5">
+            <button className="relative text-gray-400 hover:text-white transition-all duration-300 hover:scale-110">
               <Bell className="w-5 h-5" />
-              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-accent-indigo rounded-full shadow-[0_0_8px_#5D5FEF] border-2 border-[#080B13]"></span>
+              <span className="absolute top-0 right-0 w-1.5 h-1.5 bg-accent-indigo rounded-full shadow-[0_0_5px_#5D5FEF]"></span>
             </button>
-            
-            <div className="flex items-center gap-5 pl-8 border-l border-white/5 group cursor-pointer">
+            <div className="flex items-center gap-3 pl-4 border-l border-white/10 group cursor-pointer">
               <div className="flex flex-col items-end">
-                <span className="text-[14px] font-black text-white transition-colors duration-300 group-hover:text-accent-indigo tracking-tight">
-                  {userName}
-                </span>
-                <span className="text-[10px] font-black text-[#5D5FEF] uppercase tracking-[0.1em]">
-                  Pro Plan
-                </span>
+                <span className="text-[13px] font-bold text-white transition-colors duration-300 group-hover:text-accent-indigo">{userName}</span>
+                <span className="text-[10px] font-bold text-accent-indigo uppercase">Pro Plan</span>
               </div>
-              <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-[#5D5FEF] to-[#7C3AED] shadow-xl group-hover:scale-110 transition-transform duration-300">
-                <div className="w-[42px] h-[42px] rounded-full overflow-hidden border-2 border-[#080B13]">
-                  <img 
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80" 
-                    alt="Avatar" 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              <div className="w-9 h-9 rounded-full overflow-hidden border border-white/10 transition-all duration-300 group-hover:border-accent-indigo/50">
+                <img 
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80" 
+                  alt="Avatar" 
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
         </header>
 
-        {/* CONTENT */}
-        <div className="flex-1 overflow-y-auto custom-scrollbar bg-[#0A0D16]">
+        <div className="flex-1 overflow-y-auto custom-scrollbar">
           {renderContent()}
         </div>
       </main>
