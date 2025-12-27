@@ -6,7 +6,6 @@ import PricingPage from './PricingPage';
 import TemplatesPage from './TemplatesPage';
 import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
-import IntegrationsPage from './IntegrationsPage';
 import AboutPage from './AboutPage';
 import BlogPage from './BlogPage';
 import CareersPage from './CareersPage';
@@ -14,6 +13,7 @@ import ContactPage from './ContactPage';
 import PrivacyPage from './PrivacyPage';
 import TermsPage from './TermsPage';
 import CookiePage from './CookiePage';
+import ShowcasePage from './ShowcasePage';
 import { Page } from './components/Navbar';
 
 const App: React.FC = () => {
@@ -24,7 +24,7 @@ const App: React.FC = () => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'instant' // 'instant' is preferred for SPA navigation to prevent jarring scrolling animations
+      behavior: 'instant' 
     });
   }, [page]);
 
@@ -36,7 +36,6 @@ const App: React.FC = () => {
       case 'templates': return <TemplatesPage onNavigate={setPage} />;
       case 'login': return <LoginPage onNavigate={setPage} />;
       case 'signup': return <SignupPage onNavigate={setPage} />;
-      case 'integrations': return <IntegrationsPage onNavigate={setPage} />;
       case 'about': return <AboutPage onNavigate={setPage} />;
       case 'blog': return <BlogPage onNavigate={setPage} />;
       case 'careers': return <CareersPage onNavigate={setPage} />;
@@ -44,6 +43,7 @@ const App: React.FC = () => {
       case 'privacy': return <PrivacyPage onNavigate={setPage} />;
       case 'terms': return <TermsPage onNavigate={setPage} />;
       case 'cookie': return <CookiePage onNavigate={setPage} />;
+      case 'showcase': return <ShowcasePage onNavigate={setPage} />;
       default: return <LandingPage onNavigate={setPage} />;
     }
   };

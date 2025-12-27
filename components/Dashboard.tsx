@@ -22,7 +22,6 @@ type DashboardTab =
   | 'new-proposal' 
   | 'templates' 
   | 'saved' 
-  | 'analytics' 
   | 'settings' 
   | 'wizard' 
   | 'billing' 
@@ -157,16 +156,6 @@ const SidebarLink = ({ icon: Icon, label, active, onClick }: { icon: any, label:
   </button>
 );
 
-const StatCard = ({ label, value, icon: Icon, color }: any) => (
-  <div className="rounded-2xl border border-white/5 bg-[#13161F] p-6 hover:border-white/20 hover:bg-white/[0.03] transition-all duration-300 group cursor-default">
-    <div className={`w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110 ${color}`}>
-      <Icon size={20} />
-    </div>
-    <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">{label}</p>
-    <p className="text-2xl font-black">{value}</p>
-  </div>
-);
-
 const InputBlock = ({ label, defaultValue, placeholder, type = 'text', value, onChange, icon: Icon }: any) => (
   <div className="space-y-2 group">
     <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 transition-colors duration-300 group-focus-within:text-accent-indigo">{label}</label>
@@ -251,19 +240,6 @@ const StarterMission = ({ icon: Icon, title, desc, btnText, color, bg, onClick }
     >
       {btnText}
     </button>
-  </div>
-);
-
-const TemplateItem = ({ icon: Icon, label, cat, color, bg, onClick }: any) => (
-  <div 
-    onClick={onClick}
-    className="group p-4 rounded-xl border border-white/5 bg-[#13161F] hover:bg-white/[0.06] hover:border-accent-indigo/30 transition-all duration-300 ease-in-out cursor-pointer shadow-lg hover:shadow-accent-indigo/5"
-  >
-    <div className={`w-8 h-8 rounded-lg ${bg} flex items-center justify-center mb-3 group-hover:scale-110 transition-all duration-300 ease-in-out`}>
-      <Icon size={16} className={`${color}`} />
-    </div>
-    <div className={`text-[9px] font-bold uppercase tracking-widest mb-1 ${color}`}>{cat}</div>
-    <h4 className="text-[11px] font-bold text-gray-300 group-hover:text-white mb-2">{label}</h4>
   </div>
 );
 
@@ -647,69 +623,6 @@ const TemplatesLibraryView = ({ onUseTemplate }: any) => {
           </div>
         ))}
       </div>
-    </div>
-  );
-};
-
-const AnalyticsDashboardView = ({ proposals, onNew }: any) => {
-  const hasData = proposals.length > 0;
-
-  return (
-    <div className="p-8 max-w-6xl mx-auto animate-slide-up space-y-10">
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-3xl font-bold mb-2">Performance Analytics</h2>
-          <p className="text-gray-500 text-sm">Real-time data on how clients interact with your proposals.</p>
-        </div>
-        {hasData && (
-          <button className="px-5 py-2.5 bg-accent-indigo text-white font-bold text-xs rounded-xl shadow-lg shadow-accent-indigo/10 transition-all duration-300 hover:scale-105 hover:bg-accent-indigo/90">
-            Launch Action: Export PDF Report
-          </button>
-        )}
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <StatCard label="Sent Proposals" value={proposals.length} icon={Send} color="text-blue-400" />
-        <StatCard label="Total Views" value={hasData ? "48" : "0"} icon={Eye} color="text-purple-400" />
-        <StatCard label="Avg. Close Rate" value={hasData ? "33%" : "0%"} icon={TrendingUp} color="text-accent-mint" />
-        <StatCard label="Est. Revenue" value={hasData ? "$42,500" : "$0"} icon={DollarSign} color="text-orange-400" />
-      </div>
-
-      {!hasData ? (
-        <div className="glass p-16 rounded-3xl border border-white/5 flex flex-col items-center justify-center text-center space-y-8 min-h-[400px]">
-          <div className="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center relative group">
-            <BarChart className="w-12 h-12 text-gray-700 transition-all duration-500 group-hover:scale-110 group-hover:text-accent-indigo" />
-            <div className="absolute inset-0 bg-accent-indigo/5 rounded-3xl animate-pulse blur-xl" />
-          </div>
-          <div className="max-w-md">
-            <h3 className="text-2xl font-bold mb-3">Your analytics engine is warming up</h3>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              We'll start tracking engagement metrics, view duration, and closing statistics as soon as you launch your first proposal. Ready to start?
-            </p>
-          </div>
-          <button 
-            onClick={onNew}
-            className="flex items-center gap-2 px-8 py-3.5 rounded-xl bg-accent-indigo text-white font-bold text-sm shadow-xl shadow-accent-indigo/20 transition-all duration-300 hover:scale-105 hover:bg-accent-indigo/90"
-          >
-            <PlusCircle size={18} /> Launch Action: Create Your First Proposal
-          </button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-           <div className="glass p-8 rounded-3xl border border-white/5 h-80 flex flex-col justify-between">
-             <h4 className="font-bold text-sm text-gray-400 uppercase tracking-widest">Proposal Views (30 Days)</h4>
-             <div className="flex-1 flex items-center justify-center opacity-20">
-               <TrendingUp className="w-20 h-20 text-accent-indigo" />
-             </div>
-           </div>
-           <div className="glass p-8 rounded-3xl border border-white/5 h-80 flex flex-col justify-between">
-             <h4 className="font-bold text-sm text-gray-400 uppercase tracking-widest">Win Rate Progression</h4>
-             <div className="flex-1 flex items-center justify-center opacity-20">
-               <PieChart className="w-20 h-20 text-accent-mint" />
-             </div>
-           </div>
-        </div>
-      )}
     </div>
   );
 };
@@ -1412,8 +1325,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
         return <TemplatesLibraryView onUseTemplate={handleUseTemplate} />;
       case 'saved': 
         return <SavedProposalsView proposals={proposals} onView={handleViewProposal} onNew={() => setActiveTab('new-proposal')} />;
-      case 'analytics': 
-        return <AnalyticsDashboardView proposals={proposals} onNew={() => setActiveTab('new-proposal')} />;
       case 'settings': 
         return <SettingsPanel onManageBilling={() => setActiveTab('billing')} />;
       case 'billing': 
@@ -1448,7 +1359,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
           <SidebarLink icon={Plus} label="New Proposal" active={activeTab === 'new-proposal'} onClick={() => setActiveTab('new-proposal')} />
           <SidebarLink icon={FileText} label="Templates" active={activeTab === 'templates'} onClick={() => setActiveTab('templates')} />
           <SidebarLink icon={BarChart} label="Saved Proposals" active={activeTab === 'saved'} onClick={() => setActiveTab('saved')} />
-          <SidebarLink icon={PieChart} label="Analytics" active={activeTab === 'analytics'} onClick={() => setActiveTab('analytics')} />
           <SidebarLink icon={Settings} label="Settings" active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} />
         </nav>
 

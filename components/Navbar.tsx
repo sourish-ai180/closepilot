@@ -15,9 +15,12 @@ export type Page =
   | "signup"
   | "about"
   | "blog"
+  | "careers"
   | "contact"
   | "privacy"
-  | "terms";
+  | "terms"
+  | "cookie"
+  | "showcase";
 
 interface NavbarProps {
   onNavigate: (page: Page) => void;

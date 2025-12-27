@@ -2,14 +2,7 @@ import React from 'react';
 import Navbar, { Page } from './components/Navbar';
 import Footer from './components/Footer';
 import SectionHeader from './components/SectionHeader';
-import { Coffee, Globe, Heart, Rocket, Zap, ShieldCheck } from 'lucide-react';
-
-const jobs = [
-  { title: "Senior Frontend Engineer", location: "Remote / Europe", type: "Full-time" },
-  { title: "Product Designer (UI/UX)", location: "Remote", type: "Full-time" },
-  { title: "Growth Marketing Manager", location: "New York, NY", type: "Full-time" },
-  { title: "AI/ML Specialist", location: "Remote", type: "Full-time" },
-];
+import { Coffee, Globe, Heart, Rocket, Zap, ShieldCheck, Mail } from 'lucide-react';
 
 const benefits = [
   { icon: Globe, title: "100% Remote", desc: "Work from anywhere in the world. We value output over office hours." },
@@ -69,23 +62,27 @@ const CareersPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigat
           </div>
         </div>
 
-        {/* Open Roles */}
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold font-display mb-8">Open Roles</h2>
-          <div className="space-y-4">
-            {jobs.map((job, i) => (
-              <div key={i} className="flex flex-col md:flex-row justify-between items-center glass p-8 rounded-2xl border border-white/5 hover:bg-white/[0.05] transition-all group border-l-4 border-l-transparent hover:border-l-accent-indigo">
-                <div>
-                  <h3 className="text-xl font-bold group-hover:text-accent-indigo transition-colors">{job.title}</h3>
-                  <p className="text-gray-400 text-sm mt-1">{job.location} • {job.type}</p>
-                </div>
-                <button className="mt-4 md:mt-0 px-6 py-3 bg-white text-navy-900 hover:bg-gray-100 rounded-xl font-bold transition-all shadow-lg">Apply Now</button>
-              </div>
-            ))}
+        {/* General Application CTA */}
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="glass p-12 rounded-[3rem] border border-white/5 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent-indigo/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            <div className="relative z-10">
+              <Mail className="w-12 h-12 text-accent-indigo mx-auto mb-6" />
+              <h2 className="text-3xl font-bold mb-4">No Open Positions?</h2>
+              <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+                We are always looking for exceptional talent to join our mission. If you're a high-performer who wants to build something meaningful, we'd love to hear from you.
+              </p>
+              <a 
+                href="mailto:careers@closepilot.com"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-navy-900 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all shadow-xl hover:scale-105"
+              >
+                Send General Application
+              </a>
+              <p className="mt-6 text-sm text-gray-500 font-medium">
+                Reach us at careers@closepilot.com
+              </p>
+            </div>
           </div>
-          <p className="mt-12 text-center text-gray-500">
-            Don't see a role that fits? Send us your resume anyway at <span className="text-accent-indigo">careers@closepilot.com</span>
-          </p>
         </div>
       </div>
       <Footer onNavigate={onNavigate} />

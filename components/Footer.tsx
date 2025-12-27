@@ -29,29 +29,29 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h4 className="font-bold mb-6 text-white text-sm uppercase tracking-wider">Product</h4>
             <ul className="space-y-4 text-sm text-gray-400">
-              <li><button onClick={() => onNavigate('features')} className="hover:text-accent-mint transition-colors duration-300">Features</button></li>
-              <li><button onClick={() => onNavigate('pricing')} className="hover:text-accent-mint transition-colors duration-300">Pricing</button></li>
-              <li><button onClick={() => onNavigate('templates')} className="hover:text-accent-mint transition-colors duration-300">Templates</button></li>
-              <li><button onClick={() => onNavigate('integrations')} className="hover:text-accent-mint transition-colors duration-300">Integrations</button></li>
+              <li><button onClick={() => onNavigate('features')} className="hover:text-accent-mint transition-colors duration-300 text-left">Features</button></li>
+              <li><button onClick={() => onNavigate('pricing')} className="hover:text-accent-mint transition-colors duration-300 text-left">Pricing</button></li>
+              <li><button onClick={() => onNavigate('templates')} className="hover:text-accent-mint transition-colors duration-300 text-left">Templates</button></li>
+              <li><button onClick={() => onNavigate('showcase')} className="hover:text-accent-mint transition-colors duration-300 text-left">Showcase</button></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-bold mb-6 text-white text-sm uppercase tracking-wider">Company</h4>
             <ul className="space-y-4 text-sm text-gray-400">
-              <li><button onClick={() => onNavigate('about')} className="hover:text-accent-mint transition-colors duration-300">About</button></li>
-              <li><button onClick={() => onNavigate('blog')} className="hover:text-accent-mint transition-colors duration-300">Blog</button></li>
-              <li><button onClick={() => onNavigate('careers')} className="hover:text-accent-mint transition-colors duration-300">Careers</button></li>
-              <li><button onClick={() => onNavigate('contact')} className="hover:text-accent-mint transition-colors duration-300">Contact</button></li>
+              <li><button onClick={() => onNavigate('about')} className="hover:text-accent-mint transition-colors duration-300 text-left">About</button></li>
+              <li><button onClick={() => onNavigate('blog')} className="hover:text-accent-mint transition-colors duration-300 text-left">Blog</button></li>
+              <li><button onClick={() => onNavigate('careers')} className="hover:text-accent-mint transition-colors duration-300 text-left">Careers</button></li>
+              <li><button onClick={() => onNavigate('contact')} className="hover:text-accent-mint transition-colors duration-300 text-left">Contact</button></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-bold mb-6 text-white text-sm uppercase tracking-wider">Legal</h4>
             <ul className="space-y-4 text-sm text-gray-400">
-              <li><button onClick={() => onNavigate('privacy')} className="hover:text-accent-mint transition-colors duration-300">Privacy Policy</button></li>
-              <li><button onClick={() => onNavigate('terms')} className="hover:text-accent-mint transition-colors duration-300">Terms of Service</button></li>
-              <li><button onClick={() => onNavigate('cookie')} className="hover:text-accent-mint transition-colors duration-300">Cookie Policy</button></li>
+              <li><button onClick={() => onNavigate('privacy')} className="hover:text-accent-mint transition-colors duration-300 text-left">Privacy Policy</button></li>
+              <li><button onClick={() => onNavigate('terms')} className="hover:text-accent-mint transition-colors duration-300 text-left">Terms of Service</button></li>
+              <li><button onClick={() => onNavigate('cookie')} className="hover:text-accent-mint transition-colors duration-300 text-left">Cookie Policy</button></li>
             </ul>
           </div>
         </div>
