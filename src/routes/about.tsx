@@ -1,10 +1,14 @@
-import React from "react";
-import Navbar from "./src/components/Navbar";
-import Footer from "./src/components/Footer";
-import SectionHeader from "./src/components/SectionHeader";
+import { createFileRoute } from "@tanstack/react-router";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import SectionHeader from "@/components/SectiionHeader";
 import { Link } from "@tanstack/react-router";
 
-const AboutPage: React.FC = () => {
+export const Route = createFileRoute("/about")({
+  component: AboutPage,
+});
+
+function AboutPage() {
   return (
     <div className="bg-navy-900 min-h-screen text-white">
       <Navbar />
@@ -77,11 +81,7 @@ const AboutPage: React.FC = () => {
             </h2>
             <Link
               to="/signup"
-              className="px-8 py-4 inline-block
-bg-gradient-to-br from-accent-indigo via-accent-purple to-accent-indigo
-rounded-2xl
-font-semibold tracking-wide
-text-white
+              className="px-8 py-4 inline-block bg-gradient-to-br from-accent-indigo via-accent-purple to-accent-indigo rounded-2xl font-semibold tracking-wide text-white
 shadow-lg shadow-accent-indigo/25
 hover:shadow-[0_0_40px_rgba(93,95,239,0.55)]
 hover:scale-[1.04]
@@ -96,6 +96,6 @@ transition-all duration-300 ease-out"
       <Footer />
     </div>
   );
-};
+}
 
 export default AboutPage;

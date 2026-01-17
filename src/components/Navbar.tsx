@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X, Sparkles, LogOut } from "lucide-react";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
-import { auth } from "../firebase";
+import { onAuthStateChanged, signOut, type User } from "firebase/auth";
+import { auth } from "@/firebase";
 import Button from "./Button";
 import { Link, useNavigate } from "@tanstack/react-router";
 
@@ -46,7 +46,7 @@ const Navbar: React.FC = () => {
 
   const handleLogout = async () => {
     await signOut(auth);
-    navigate({ to: '/' });
+    navigate({ to: "/" });
   };
 
   const navLinks: { label: string; to: string }[] = [
@@ -57,14 +57,14 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled
           ? "bg-navy-900/80 backdrop-blur-md border-b border-white/5 py-4"
           : "bg-transparent py-6"
-        }`}
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 relative">
         <div className="flex justify-between items-center">
-
           {/* Logo */}
           <Link
             to="/"
@@ -187,10 +187,7 @@ const Navbar: React.FC = () => {
                 className="block w-full"
                 onClick={() => setIsOpen(false)}
               >
-                <Button
-                  variant="primary"
-                  className="w-full justify-center"
-                >
+                <Button variant="primary" className="w-full justify-center">
                   Sign Up
                 </Button>
               </Link>

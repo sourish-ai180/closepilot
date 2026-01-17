@@ -1,5 +1,5 @@
-import React from 'react';
-import { Palette, Laptop, Sparkles, Building2, Megaphone } from 'lucide-react';
+import React from "react";
+import { Palette, Laptop, Sparkles, Building2, Megaphone } from "lucide-react";
 
 const TrustBadges: React.FC = () => {
   const categories = [
@@ -15,12 +15,12 @@ const TrustBadges: React.FC = () => {
   // Helper component to render a single set of badges
   // pr-6 ensures the gap between the end of this group and the start of the next group matches the gap-6
   const MarqueeGroup = ({ ariaHidden }: { ariaHidden?: boolean }) => (
-    <div 
-      className="flex shrink-0 animate-marquee items-center gap-6 pr-6" 
+    <div
+      className="flex shrink-0 animate-marquee items-center gap-6 pr-6"
       aria-hidden={ariaHidden}
     >
       {categories.map((cat, i) => (
-        <div 
+        <div
           key={i}
           className="group flex items-center gap-3 px-8 py-4 rounded-full bg-white/[0.02] border border-white/5 text-gray-300 font-medium transition-all duration-300 hover:bg-white/[0.05] hover:border-accent-indigo/30 hover:text-white cursor-default backdrop-blur-sm whitespace-nowrap"
         >
@@ -40,7 +40,8 @@ const TrustBadges: React.FC = () => {
           Loved by Early Creators & Agencies
         </h2>
         <p className="text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
-          A growing community of freelancers, creators & small teams are already improving their workflow with AI‑powered proposals.
+          A growing community of freelancers, creators & small teams are already
+          improving their workflow with AI‑powered proposals.
         </p>
       </div>
 
@@ -49,7 +50,7 @@ const TrustBadges: React.FC = () => {
         {/* Gradient Masks */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0B0F19] to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0B0F19] to-transparent z-10 pointer-events-none" />
-        
+
         {/* Double render for seamless loop */}
         <MarqueeGroup />
         <MarqueeGroup ariaHidden={true} />
