@@ -3,6 +3,7 @@ import { Menu, X, Sparkles, LogOut } from "lucide-react";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { auth } from "../firebase";
 import Button from "./Button";
+import { Link, useNavigate } from "@tanstack/react-router";
 
 /* ROUTES */
 export type Page =
@@ -22,14 +23,11 @@ export type Page =
   | "cookie"
   | "showcase";
 
-interface NavbarProps {
-  onNavigate: (page: Page) => void;
-}
-
-const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
+const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
 
   /* Scroll effect */
   useEffect(() => {
@@ -48,30 +46,29 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
 
   const handleLogout = async () => {
     await signOut(auth);
-    onNavigate("landing");
+    navigate({ to: '/' });
   };
 
-  const navLinks: { label: string; page: Page }[] = [
-    { label: "Features", page: "features" },
-    { label: "Pricing", page: "pricing" },
-    { label: "Templates", page: "templates" },
+  const navLinks: { label: string; to: string }[] = [
+    { label: "Features", to: "/features" },
+    { label: "Pricing", to: "/pricing" },
+    { label: "Templates", to: "/templates" },
   ];
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
           ? "bg-navy-900/80 backdrop-blur-md border-b border-white/5 py-4"
           : "bg-transparent py-6"
-      }`}
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 relative">
         <div className="flex justify-between items-center">
 
           {/* Logo */}
-          <div
+          <Link
+            to="/"
             className="flex items-center gap-3 cursor-pointer group transition-transform duration-300 hover:scale-105"
-            onClick={() => onNavigate("landing")}
           >
             <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent-indigo to-accent-mint flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
               <Sparkles className="w-5 h-5 text-white" />
@@ -79,29 +76,31 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
             <span className="font-display font-bold text-xl text-white group-hover:text-accent-mint transition-colors">
               ClosePilot
             </span>
-          </div>
+          </Link>
 
           {/* Center Navigation (Desktop) */}
           <div className="hidden md:flex items-center gap-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             {navLinks.map((item) => (
-              <button
+              <Link
                 key={item.label}
-                onClick={() => onNavigate(item.page)}
+                to={item.to}
                 className="relative group text-sm font-medium text-gray-300 hover:text-white transition-colors"
+                activeProps={{ className: "text-white" }}
               >
                 {item.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-indigo to-accent-mint group-hover:w-full transition-all duration-300 rounded-full opacity-0 group-hover:opacity-100" />
-              </button>
+              </Link>
             ))}
 
             {user && (
-              <button
-                onClick={() => onNavigate("dashboard")}
+              <Link
+                to="/dashboard"
                 className="relative group text-sm font-medium text-gray-300 hover:text-white transition-colors"
+                activeProps={{ className: "text-white" }}
               >
                 Dashboard
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-indigo to-accent-mint group-hover:w-full transition-all duration-300 rounded-full opacity-0 group-hover:opacity-100" />
-              </button>
+              </Link>
             )}
           </div>
 
@@ -109,21 +108,22 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
           <div className="hidden md:flex items-center gap-4">
             {!user ? (
               <>
-                <button
-                  onClick={() => onNavigate("login")}
+                <Link
+                  to="/login"
                   className="relative group text-sm font-medium text-gray-300 hover:text-white transition-colors"
                 >
                   Log In
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent-indigo to-accent-mint group-hover:w-full transition-all duration-300 rounded-full opacity-0 group-hover:opacity-100" />
-                </button>
+                </Link>
 
-                <Button
-                  variant="primary"
-                  className="!py-2 !px-4 !text-sm hover:scale-105 transition-transform"
-                  onClick={() => onNavigate("signup")}
-                >
-                  Sign Up
-                </Button>
+                <Link to="/signup">
+                  <Button
+                    variant="primary"
+                    className="!py-2 !px-4 !text-sm hover:scale-105 transition-transform"
+                  >
+                    Sign Up
+                  </Button>
+                </Link>
               </>
             ) : (
               <button
@@ -151,53 +151,49 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate }) => {
       {isOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-navy-900/95 backdrop-blur-lg border-b border-white/10 p-4 space-y-4 animate-slide-up shadow-2xl">
           {navLinks.map((item) => (
-            <button
+            <Link
               key={item.label}
-              onClick={() => {
-                onNavigate(item.page);
-                setIsOpen(false);
-              }}
+              to={item.to}
+              onClick={() => setIsOpen(false)}
               className="block text-lg text-gray-300 hover:text-white transition-colors"
             >
               {item.label}
-            </button>
+            </Link>
           ))}
 
           {user && (
-            <button
-              onClick={() => {
-                onNavigate("dashboard");
-                setIsOpen(false);
-              }}
+            <Link
+              to="/dashboard"
+              onClick={() => setIsOpen(false)}
               className="block text-lg text-gray-300 hover:text-white transition-colors"
             >
               Dashboard
-            </button>
+            </Link>
           )}
 
           <hr className="border-white/10" />
 
           {!user ? (
             <>
-              <button
-                onClick={() => {
-                  onNavigate("login");
-                  setIsOpen(false);
-                }}
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
                 className="block text-lg text-gray-300 hover:text-white transition-colors"
               >
                 Log In
-              </button>
-              <Button
-                variant="primary"
-                className="w-full justify-center"
-                onClick={() => {
-                  onNavigate("signup");
-                  setIsOpen(false);
-                }}
+              </Link>
+              <Link
+                to="/signup"
+                className="block w-full"
+                onClick={() => setIsOpen(false)}
               >
-                Sign Up
-              </Button>
+                <Button
+                  variant="primary"
+                  className="w-full justify-center"
+                >
+                  Sign Up
+                </Button>
+              </Link>
             </>
           ) : (
             <button

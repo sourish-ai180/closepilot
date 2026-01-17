@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Layout, Plus, FileText, BarChart, PieChart, Settings, Search, Bell, ChevronRight, 
-  MoreHorizontal, Megaphone, Image, Code, Video, Sparkles, ArrowRight, Clock, 
-  MoreVertical, Edit3, Copy, Download, LogOut, Lock, Wand2, Send, ArrowLeft, Calendar, 
+import {
+  Layout, Plus, FileText, BarChart, PieChart, Settings, Search, Bell, ChevronRight,
+  MoreHorizontal, Megaphone, Image, Code, Video, Sparkles, ArrowRight, Clock,
+  MoreVertical, Edit3, Copy, Download, LogOut, Lock, Wand2, Send, ArrowLeft, Calendar,
   DollarSign, Gavel, Trash2, GripVertical, PlusCircle, CreditCard, ShieldCheck, History, ExternalLink, Loader2, Palette, CheckCircle2,
   Briefcase, Star, Eye, MousePointer2, Share2, Printer, CheckCircle, AlertCircle, Rocket, Target, Zap, Filter, User, Shield, Calculator, Globe, TrendingUp, Users,
   Layers, Lightbulb, FilePlus, ZapOff, PlayCircle, Upload, Save, Check, Info, Phone, Mail, Link as LinkIcon, Camera, BellRing, Smartphone, LayoutGrid
@@ -10,21 +10,18 @@ import {
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import { GoogleGenAI, Type } from "@google/genai";
+import { useNavigate } from '@tanstack/react-router';
 
 // --- TYPES & INTERFACES ---
 
-interface DashboardProps {
-  onBack: () => void;
-}
-
-type DashboardTab = 
-  | 'dashboard' 
-  | 'new-proposal' 
-  | 'templates' 
-  | 'saved' 
-  | 'settings' 
-  | 'wizard' 
-  | 'billing' 
+type DashboardTab =
+  | 'dashboard'
+  | 'new-proposal'
+  | 'templates'
+  | 'saved'
+  | 'settings'
+  | 'wizard'
+  | 'billing'
   | 'proposal-view'
   | 'pricing-engine'
   | 'brand-sync';
@@ -143,13 +140,12 @@ const TEMPLATE_MAP: Record<string, TemplateConfig> = {
 // --- UTILITY COMPONENTS ---
 
 const SidebarLink = ({ icon: Icon, label, active, onClick }: { icon: any, label: string, active: boolean, onClick: () => void }) => (
-  <button 
+  <button
     onClick={onClick}
-    className={`w-full flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-300 group ${
-      active 
-        ? 'bg-gradient-to-r from-[#5D5FEF] to-[#7C3AED] text-white shadow-lg shadow-accent-indigo/30' 
+    className={`w-full flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-300 group ${active
+        ? 'bg-gradient-to-r from-[#5D5FEF] to-[#7C3AED] text-white shadow-lg shadow-accent-indigo/30'
         : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.03]'
-    }`}
+      }`}
   >
     <Icon size={18} className={`transition-all duration-300 ${active ? 'text-white' : 'group-hover:text-accent-indigo'}`} />
     <span className={`text-[13px] font-bold`}>{label}</span>
@@ -161,7 +157,7 @@ const InputBlock = ({ label, defaultValue, placeholder, type = 'text', value, on
     <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 transition-colors duration-300 group-focus-within:text-accent-indigo">{label}</label>
     <div className="relative">
       {Icon && <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-accent-indigo transition-colors" size={16} />}
-      <input 
+      <input
         type={type}
         defaultValue={defaultValue}
         value={value}
@@ -174,7 +170,7 @@ const InputBlock = ({ label, defaultValue, placeholder, type = 'text', value, on
 );
 
 const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
-  <tr 
+  <tr
     onClick={onView}
     className="group hover:bg-white/[0.02] transition-all duration-300 cursor-pointer border-b border-white/5 last:border-0"
   >
@@ -187,11 +183,10 @@ const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
     <td className="px-8 py-5 text-gray-400 font-medium">{client}</td>
     <td className="px-8 py-5 font-bold text-white">{value}</td>
     <td className="px-8 py-5">
-      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${
-        status === 'Accepted' ? 'text-accent-mint border-accent-mint/30 bg-accent-mint/5' :
-        status === 'Sent' ? 'text-blue-400 border-blue-400/30 bg-blue-400/5' :
-        'text-gray-500 border-white/10 bg-white/5'
-      }`}>
+      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${status === 'Accepted' ? 'text-accent-mint border-accent-mint/30 bg-accent-mint/5' :
+          status === 'Sent' ? 'text-blue-400 border-blue-400/30 bg-blue-400/5' :
+            'text-gray-500 border-white/10 bg-white/5'
+        }`}>
         {status}
       </span>
     </td>
@@ -206,7 +201,7 @@ const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
 );
 
 const CreationCard = ({ icon: Icon, title, desc, btnText, color, btnColor, onClick }: any) => (
-  <div 
+  <div
     onClick={onClick}
     className={`p-10 rounded-3xl bg-[#13161F] border border-white/5 hover:border-accent-indigo/30 hover:shadow-[0_0_50px_rgba(93,95,239,0.15)] transition-all duration-700 ease-in-out cursor-pointer group relative overflow-hidden`}
   >
@@ -223,19 +218,19 @@ const CreationCard = ({ icon: Icon, title, desc, btnText, color, btnColor, onCli
 );
 
 const StarterMission = ({ icon: Icon, title, desc, btnText, color, bg, onClick }: any) => (
-  <div 
+  <div
     onClick={onClick}
     className={`p-10 ${bg} hover:bg-white/[0.05] transition-all duration-700 ease-in-out group flex flex-col items-center text-center cursor-pointer relative overflow-hidden border-r border-white/5 last:border-r-0`}
   >
     {/* Smooth Hover Overlay */}
     <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none" />
-    
+
     <div className={`w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:border-white/20 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.05)] transition-all duration-700 ease-in-out ${color}`}>
       <Icon size={36} strokeWidth={2.5} />
     </div>
     <h4 className="font-bold text-xl mb-3 text-gray-200 group-hover:text-white transition-colors duration-500 tracking-tight">{title}</h4>
     <p className="text-sm text-gray-600 mb-10 max-w-[240px] group-hover:text-gray-400 transition-colors duration-500 leading-relaxed font-medium">{desc}</p>
-    <button 
+    <button
       className={`px-10 py-3 rounded-xl bg-white text-navy-900 font-black text-[11px] uppercase tracking-[0.2em] shadow-[0_8px_24px_rgba(0,0,0,0.4)] transition-all duration-500 hover:bg-gray-100 hover:scale-[1.05] hover:shadow-white/5 active:scale-95`}
     >
       {btnText}
@@ -251,7 +246,7 @@ const BlockLink = ({ icon: Icon, label, active, onClick }: { icon: any, label: s
 );
 
 const SettingsSubLink = ({ active, label, icon: Icon, onClick }: any) => (
-  <button 
+  <button
     onClick={onClick}
     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ease-in-out ${active ? 'bg-accent-indigo text-white shadow-lg shadow-accent-indigo/10' : 'text-gray-500 hover:text-white hover:bg-white/5'}`}
   >
@@ -266,8 +261,8 @@ const EngineRow = ({ label, sub, value, unit }: any) => (
       <p className="text-[10px] text-gray-600">{sub}</p>
     </div>
     <div className="flex items-center gap-2">
-       <input type="number" defaultValue={value} className="w-20 bg-transparent border-b border-white/10 py-1 text-right text-sm font-bold focus:outline-none focus:border-accent-indigo transition-all duration-300" />
-       <span className="text-gray-500 text-sm">{unit}</span>
+      <input type="number" defaultValue={value} className="w-20 bg-transparent border-b border-white/10 py-1 text-right text-sm font-bold focus:outline-none focus:border-accent-indigo transition-all duration-300" />
+      <span className="text-gray-500 text-sm">{unit}</span>
     </div>
   </div>
 );
@@ -295,7 +290,7 @@ const PricingEngineView = ({ onBack }: { onBack: () => void }) => {
             <p className="text-gray-500 text-sm mt-1">Define your business fundamentals to automate profitable quotes.</p>
           </div>
         </div>
-        <button 
+        <button
           onClick={handleSave}
           className="flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-indigo text-white font-bold text-sm shadow-xl shadow-accent-indigo/10 transition-all duration-300 hover:scale-105 hover:bg-accent-indigo/90"
         >
@@ -328,7 +323,7 @@ const PricingEngineView = ({ onBack }: { onBack: () => void }) => {
           <div className="p-8 rounded-3xl bg-gradient-to-br from-accent-indigo/10 to-accent-purple/10 border border-accent-indigo/20">
             <h4 className="font-bold text-white mb-4 flex items-center gap-2"><Sparkles size={18} className="text-accent-indigo" /> AI Optimization</h4>
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
-              These values are used to calculate the <span className="text-white font-bold">Smart Quote</span> in the proposal wizard. 
+              These values are used to calculate the <span className="text-white font-bold">Smart Quote</span> in the proposal wizard.
               The AI will automatically suggest the best pricing tier based on your targets.
             </p>
             <div className="space-y-3">
@@ -364,7 +359,7 @@ const BrandSyncView = ({ onBack }: { onBack: () => void }) => {
             <p className="text-gray-500 text-sm mt-1">Upload your identity to automatically brand every proposal.</p>
           </div>
         </div>
-        <button 
+        <button
           onClick={handleSync}
           className="flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-mint text-navy-900 font-bold text-sm shadow-xl shadow-accent-mint/20 transition-all duration-300 hover:scale-105 hover:bg-accent-mint/90"
         >
@@ -415,7 +410,7 @@ const BillingView = ({ onBack }: { onBack: () => void }) => {
                 Active
               </span>
             </div>
-            
+
             <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
               <div>
                 <p className="text-2xl font-black text-white">Pro Plan</p>
@@ -491,7 +486,7 @@ const NewProposalView = ({ onNavigate, onUseTemplate }: any) => {
           <h2 className="text-3xl font-bold mb-2">Create New Proposal</h2>
           <p className="text-gray-500 text-sm">How would you like to start your next deal?</p>
         </div>
-        <button 
+        <button
           onClick={() => onNavigate('dashboard')}
           className="flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-white transition-all duration-300 ease-in-out"
         >
@@ -500,18 +495,18 @@ const NewProposalView = ({ onNavigate, onUseTemplate }: any) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <CreationCard 
-          icon={Wand2} 
-          title="AI Wizard" 
+        <CreationCard
+          icon={Wand2}
+          title="AI Wizard"
           desc="The fastest way to close. Answer a few questions and our AI will generate a tailored, high-converting proposal for you."
           btnText="Launch AI Wizard"
           btnColor="bg-[#3f41a4]"
           color="accent-indigo"
           onClick={() => onNavigate('templates')}
         />
-        <CreationCard 
-          icon={FilePlus} 
-          title="Start from Scratch" 
+        <CreationCard
+          icon={FilePlus}
+          title="Start from Scratch"
           desc="Full creative control. Build your proposal block by block using our expert elements and pricing engine."
           btnText="Open Editor"
           btnColor="bg-[#2d7a5f]"
@@ -521,14 +516,14 @@ const NewProposalView = ({ onNavigate, onUseTemplate }: any) => {
       </div>
 
       <div className="p-10 rounded-3xl bg-white/[0.01] border border-white/5 flex flex-col items-center text-center transition-all duration-300 hover:border-white/10 hover:bg-white/[0.02]">
-         <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 text-gray-600">
-            <Lightbulb size={24} />
-         </div>
-         <h4 className="font-bold text-white mb-2">Need a different approach?</h4>
-         <p className="text-sm text-gray-500 max-w-md mb-8">You can also import existing PDF proposals to analyze them or convert them into reusable blocks.</p>
-         <button className="px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-gray-400 font-bold text-sm hover:bg-white/10 transition-all duration-300 shadow-xl group">
-            Launch Action: Import PDF
-         </button>
+        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-6 text-gray-600">
+          <Lightbulb size={24} />
+        </div>
+        <h4 className="font-bold text-white mb-2">Need a different approach?</h4>
+        <p className="text-sm text-gray-500 max-w-md mb-8">You can also import existing PDF proposals to analyze them or convert them into reusable blocks.</p>
+        <button className="px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-gray-400 font-bold text-sm hover:bg-white/10 transition-all duration-300 shadow-xl group">
+          Launch Action: Import PDF
+        </button>
       </div>
     </div>
   );
@@ -568,7 +563,7 @@ const SavedProposalsView = ({ proposals, onView, onNew }: any) => (
     ) : (
       <div className="py-20 flex flex-col items-center justify-center text-center">
         <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 text-gray-600 transition-all duration-300 hover:scale-110 hover:border-accent-indigo/30">
-           <FileText size={40} />
+          <FileText size={40} />
         </div>
         <h3 className="text-xl font-bold mb-2">No proposals yet</h3>
         <button onClick={onNew} className="px-8 py-3 rounded-xl bg-white text-navy-900 font-bold hover:bg-gray-200 transition-all duration-300 shadow-xl hover:scale-105">Launch Action: Create First Draft</button>
@@ -592,7 +587,7 @@ const TemplatesLibraryView = ({ onUseTemplate }: any) => {
 
       <div className="flex gap-2 mb-8 overflow-x-auto pb-2 scrollbar-hide">
         {categories.map(cat => (
-          <button 
+          <button
             key={cat}
             onClick={() => setActiveCat(cat)}
             className={`px-6 py-2 rounded-full text-xs font-bold transition-all duration-300 border ${activeCat === cat ? 'bg-accent-indigo border-accent-indigo text-white shadow-lg shadow-accent-indigo/10' : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/10 hover:text-gray-300'}`}
@@ -606,22 +601,22 @@ const TemplatesLibraryView = ({ onUseTemplate }: any) => {
         {Object.values(TEMPLATE_MAP)
           .filter(t => activeCat === "All" || t.cat === activeCat)
           .map(t => (
-          <div key={t.id} className="glass p-8 rounded-3xl border border-white/5 hover:border-accent-indigo/30 hover:bg-white/[0.04] transition-all duration-300 ease-in-out group flex flex-col justify-between">
-            <div>
-              <div className={`w-12 h-12 rounded-2xl ${t.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${t.color}`}>
-                <t.icon size={24} />
+            <div key={t.id} className="glass p-8 rounded-3xl border border-white/5 hover:border-accent-indigo/30 hover:bg-white/[0.04] transition-all duration-300 ease-in-out group flex flex-col justify-between">
+              <div>
+                <div className={`w-12 h-12 rounded-2xl ${t.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${t.color}`}>
+                  <t.icon size={24} />
+                </div>
+                <h3 className="text-xl font-bold mb-2 group-hover:text-white transition-colors duration-300">{t.label}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed mb-8">{t.description}</p>
               </div>
-              <h3 className="text-xl font-bold mb-2 group-hover:text-white transition-colors duration-300">{t.label}</h3>
-              <p className="text-sm text-gray-400 leading-relaxed mb-8">{t.description}</p>
+              <button
+                onClick={() => onUseTemplate(t.id)}
+                className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold hover:bg-accent-indigo hover:text-white hover:border-accent-indigo transition-all duration-300"
+              >
+                Use this template
+              </button>
             </div>
-            <button 
-              onClick={() => onUseTemplate(t.id)}
-              className="w-full py-3 rounded-xl bg-white/5 border border-white/10 text-xs font-bold hover:bg-accent-indigo hover:text-white hover:border-accent-indigo transition-all duration-300"
-            >
-              Use this template
-            </button>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
@@ -643,7 +638,7 @@ const SettingsPanel = ({ onManageBilling }: any) => {
           <h2 className="text-3xl font-bold mb-2">Account Settings</h2>
           <p className="text-gray-500 text-sm">Configure your personal and business presence on ClosePilot.</p>
         </div>
-        <button 
+        <button
           onClick={handleSave}
           className="px-6 py-3 rounded-xl bg-accent-indigo text-white font-bold text-sm shadow-xl shadow-accent-indigo/10 transition-all duration-300 hover:scale-105 hover:bg-accent-indigo/90 flex items-center gap-2"
         >
@@ -658,7 +653,7 @@ const SettingsPanel = ({ onManageBilling }: any) => {
           <SettingsSubLink active={activeSubTab === 'engine'} label="Pricing Engine" icon={Calculator} onClick={() => setActiveSubTab('engine')} />
           <SettingsSubLink active={activeSubTab === 'security'} label="Security" icon={Shield} onClick={() => setActiveSubTab('security')} />
           <SettingsSubLink active={activeSubTab === 'notifications'} label="Notifications" icon={BellRing} onClick={() => setActiveSubTab('notifications')} />
-          
+
           <div className="pt-6 mt-6 border-t border-white/5 px-4">
             <p className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-4">Support</p>
             <button className="flex items-center gap-3 text-sm text-gray-500 hover:text-white transition-colors py-2"><Info size={16} /> Help Center</button>
@@ -669,169 +664,169 @@ const SettingsPanel = ({ onManageBilling }: any) => {
         <div className="flex-1 space-y-8 transition-all duration-300">
           {activeSubTab === 'profile' && (
             <div className="space-y-8 animate-slide-up">
-               <div className="glass p-8 rounded-3xl border border-white/5 space-y-8">
-                  <div className="flex items-center gap-8">
-                    <div className="relative group">
-                      <div className="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-accent-indigo/50">
-                        <img 
-                          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80" 
-                          alt="Avatar" 
-                          className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
-                        />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                          <Camera className="text-white" size={24} />
-                        </div>
+              <div className="glass p-8 rounded-3xl border border-white/5 space-y-8">
+                <div className="flex items-center gap-8">
+                  <div className="relative group">
+                    <div className="w-24 h-24 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden transition-all duration-300 group-hover:border-accent-indigo/50">
+                      <img
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80"
+                        alt="Avatar"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                      />
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <Camera className="text-white" size={24} />
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <h3 className="text-xl font-bold">Public Profile</h3>
-                      <p className="text-sm text-gray-500">This information will be displayed on your generated proposals.</p>
-                      <button className="text-xs font-bold text-accent-indigo hover:text-accent-mint transition-colors mt-2">Change Avatar Image</button>
-                    </div>
                   </div>
+                  <div className="space-y-1">
+                    <h3 className="text-xl font-bold">Public Profile</h3>
+                    <p className="text-sm text-gray-500">This information will be displayed on your generated proposals.</p>
+                    <button className="text-xs font-bold text-accent-indigo hover:text-accent-mint transition-colors mt-2">Change Avatar Image</button>
+                  </div>
+                </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <InputBlock label="Full Name" defaultValue="Rick Kundu" icon={User} />
+                  <InputBlock label="Email Address" defaultValue="rickkundu@example.com" icon={Mail} />
+                  <InputBlock label="Job Title" defaultValue="Senior Product Designer" icon={Briefcase} />
+                  <InputBlock label="Phone Number" defaultValue="+1 (555) 000-0000" icon={Phone} />
+                </div>
+
+                <div className="space-y-2 group">
+                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Short Bio</label>
+                  <textarea rows={4} className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 placeholder:text-gray-700" defaultValue="Helping high-growth startups build scalable design systems and closing bigger deals with ClosePilot." />
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Social Presense</label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <InputBlock label="Full Name" defaultValue="Rick Kundu" icon={User} />
-                    <InputBlock label="Email Address" defaultValue="rickkundu@example.com" icon={Mail} />
-                    <InputBlock label="Job Title" defaultValue="Senior Product Designer" icon={Briefcase} />
-                    <InputBlock label="Phone Number" defaultValue="+1 (555) 000-0000" icon={Phone} />
+                    <InputBlock label="LinkedIn" placeholder="linkedin.com/in/..." icon={LinkIcon} />
+                    <InputBlock label="Portfolio / Website" placeholder="https://..." icon={Globe} />
                   </div>
-                  
-                  <div className="space-y-2 group">
-                    <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Short Bio</label>
-                    <textarea rows={4} className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 placeholder:text-gray-700" defaultValue="Helping high-growth startups build scalable design systems and closing bigger deals with ClosePilot." />
-                  </div>
-
-                  <div className="space-y-4">
-                    <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1">Social Presense</label>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <InputBlock label="LinkedIn" placeholder="linkedin.com/in/..." icon={LinkIcon} />
-                      <InputBlock label="Portfolio / Website" placeholder="https://..." icon={Globe} />
-                    </div>
-                  </div>
-               </div>
+                </div>
+              </div>
             </div>
           )}
 
           {activeSubTab === 'brand' && (
             <div className="space-y-8 animate-slide-up">
-               <div className="glass p-8 rounded-3xl border border-white/5 space-y-10">
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">Visual Identity</h3>
-                    <p className="text-sm text-gray-500">Customize the look of your exported PDFs and shared links.</p>
-                  </div>
+              <div className="glass p-8 rounded-3xl border border-white/5 space-y-10">
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Visual Identity</h3>
+                  <p className="text-sm text-gray-500">Customize the look of your exported PDFs and shared links.</p>
+                </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div className="space-y-4">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Logo (Dark Background)</p>
-                      <div className="h-40 rounded-2xl border-2 border-dashed border-white/5 bg-white/[0.01] flex flex-col items-center justify-center group hover:border-accent-indigo/40 transition-colors cursor-pointer">
-                        <Upload size={24} className="text-gray-600 mb-2 group-hover:scale-110 group-hover:text-accent-indigo transition-all" />
-                        <span className="text-[11px] font-bold text-gray-600 uppercase">SVG or PNG (Max 5MB)</span>
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Logo (Light Background)</p>
-                      <div className="h-40 rounded-2xl border-2 border-dashed border-white/5 bg-white flex flex-col items-center justify-center group hover:border-accent-indigo/40 transition-colors cursor-pointer shadow-xl">
-                        <Upload size={24} className="text-gray-300 mb-2 group-hover:scale-110 group-hover:text-accent-indigo transition-all" />
-                        <span className="text-[11px] font-bold text-gray-300 uppercase">SVG or PNG (Max 5MB)</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-6">
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Color Palette</p>
-                    <div className="flex flex-wrap gap-6">
-                      {['Primary', 'Secondary', 'Accent'].map((colorType) => (
-                        <div key={colorType} className="space-y-3">
-                          <div className="w-16 h-16 rounded-2xl bg-accent-indigo shadow-lg border border-white/10 cursor-pointer hover:scale-105 transition-transform" />
-                          <p className="text-[10px] font-bold text-gray-500 text-center uppercase tracking-tighter">{colorType}</p>
-                        </div>
-                      ))}
-                      <div className="flex flex-col justify-center gap-2">
-                        <div className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-2 border border-white/5">
-                           <div className="w-4 h-4 rounded-full bg-accent-indigo" />
-                           <span className="font-mono text-xs">#5D5FEF</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4 pt-4 border-t border-white/5">
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Typography Preference</p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {['Inter', 'Manrope', 'Plus Jakarta', 'Geist'].map(font => (
-                        <button key={font} className={`py-3 rounded-xl border transition-all text-xs font-bold ${font === 'Inter' ? 'bg-accent-indigo/10 border-accent-indigo text-white' : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/20'}`}>
-                          {font}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-               </div>
-            </div>
-          )}
-
-          {activeSubTab === 'engine' && (
-             <div className="space-y-8 animate-slide-up">
-                <div className="glass p-8 rounded-3xl border border-white/5 space-y-8">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">Global Pricing Parameters</h3>
-                      <p className="text-sm text-gray-500">Standardize your profitability across all automated proposals.</p>
-                    </div>
-                    <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/5">
-                      <span className="text-[10px] font-bold text-gray-600 uppercase">Currency:</span>
-                      <span className="text-sm font-bold">USD ($)</span>
-                      <ChevronRight size={14} className="text-gray-700" />
-                    </div>
-                  </div>
-
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <div className="space-y-4">
-                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Execution Roles (Hourly)</p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <EngineRow label="Project Strategy" sub="High-level planning & discovery" value="250" unit="$" />
-                      <EngineRow label="Creative Design" sub="Visual assets & branding" value="180" unit="$" />
-                      <EngineRow label="Software Dev" sub="Frontend/Backend engineering" value="150" unit="$" />
-                      <EngineRow label="Management" sub="Ops & project coordination" value="95" unit="$" />
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Logo (Dark Background)</p>
+                    <div className="h-40 rounded-2xl border-2 border-dashed border-white/5 bg-white/[0.01] flex flex-col items-center justify-center group hover:border-accent-indigo/40 transition-colors cursor-pointer">
+                      <Upload size={24} className="text-gray-600 mb-2 group-hover:scale-110 group-hover:text-accent-indigo transition-all" />
+                      <span className="text-[11px] font-bold text-gray-600 uppercase">SVG or PNG (Max 5MB)</span>
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-white/5">
-                    <div className="space-y-4">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Margin Config</p>
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center bg-[#13161F] p-4 rounded-xl">
-                          <span className="text-sm text-gray-400">Target Net Margin</span>
-                          <span className="font-bold text-accent-mint">35%</span>
-                        </div>
-                        <div className="flex justify-between items-center bg-[#13161F] p-4 rounded-xl">
-                          <span className="text-sm text-gray-400">Safety Buffer</span>
-                          <span className="font-bold text-orange-400">15%</span>
-                        </div>
-                      </div>
+                  <div className="space-y-4">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Logo (Light Background)</p>
+                    <div className="h-40 rounded-2xl border-2 border-dashed border-white/5 bg-white flex flex-col items-center justify-center group hover:border-accent-indigo/40 transition-colors cursor-pointer shadow-xl">
+                      <Upload size={24} className="text-gray-300 mb-2 group-hover:scale-110 group-hover:text-accent-indigo transition-all" />
+                      <span className="text-[11px] font-bold text-gray-300 uppercase">SVG or PNG (Max 5MB)</span>
                     </div>
-                    <div className="space-y-4">
-                      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Tax & Legal</p>
-                      <InputBlock label="Default VAT / Tax Rate" defaultValue="20" unit="%" />
-                      <div className="flex items-center gap-2 text-[10px] text-gray-500 mt-2">
-                        <Info size={12} /> Automatically applied to line items.
+                  </div>
+                </div>
+
+                <div className="space-y-6">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Color Palette</p>
+                  <div className="flex flex-wrap gap-6">
+                    {['Primary', 'Secondary', 'Accent'].map((colorType) => (
+                      <div key={colorType} className="space-y-3">
+                        <div className="w-16 h-16 rounded-2xl bg-accent-indigo shadow-lg border border-white/10 cursor-pointer hover:scale-105 transition-transform" />
+                        <p className="text-[10px] font-bold text-gray-500 text-center uppercase tracking-tighter">{colorType}</p>
+                      </div>
+                    ))}
+                    <div className="flex flex-col justify-center gap-2">
+                      <div className="flex items-center gap-3 bg-white/5 rounded-xl px-4 py-2 border border-white/5">
+                        <div className="w-4 h-4 rounded-full bg-accent-indigo" />
+                        <span className="font-mono text-xs">#5D5FEF</span>
                       </div>
                     </div>
                   </div>
                 </div>
-                <button 
-                  onClick={onManageBilling}
-                  className="w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-sm font-bold text-white hover:bg-white/10 transition-all flex items-center justify-center gap-2"
-                >
-                  <CreditCard size={18} /> Manage Subscription & Billing Details
-                </button>
-             </div>
+
+                <div className="space-y-4 pt-4 border-t border-white/5">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Typography Preference</p>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {['Inter', 'Manrope', 'Plus Jakarta', 'Geist'].map(font => (
+                      <button key={font} className={`py-3 rounded-xl border transition-all text-xs font-bold ${font === 'Inter' ? 'bg-accent-indigo/10 border-accent-indigo text-white' : 'bg-white/5 border-white/5 text-gray-500 hover:border-white/20'}`}>
+                        {font}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeSubTab === 'engine' && (
+            <div className="space-y-8 animate-slide-up">
+              <div className="glass p-8 rounded-3xl border border-white/5 space-y-8">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Global Pricing Parameters</h3>
+                    <p className="text-sm text-gray-500">Standardize your profitability across all automated proposals.</p>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/5 px-4 py-2 rounded-xl border border-white/5">
+                    <span className="text-[10px] font-bold text-gray-600 uppercase">Currency:</span>
+                    <span className="text-sm font-bold">USD ($)</span>
+                    <ChevronRight size={14} className="text-gray-700" />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Execution Roles (Hourly)</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <EngineRow label="Project Strategy" sub="High-level planning & discovery" value="250" unit="$" />
+                    <EngineRow label="Creative Design" sub="Visual assets & branding" value="180" unit="$" />
+                    <EngineRow label="Software Dev" sub="Frontend/Backend engineering" value="150" unit="$" />
+                    <EngineRow label="Management" sub="Ops & project coordination" value="95" unit="$" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-white/5">
+                  <div className="space-y-4">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Margin Config</p>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center bg-[#13161F] p-4 rounded-xl">
+                        <span className="text-sm text-gray-400">Target Net Margin</span>
+                        <span className="font-bold text-accent-mint">35%</span>
+                      </div>
+                      <div className="flex justify-between items-center bg-[#13161F] p-4 rounded-xl">
+                        <span className="text-sm text-gray-400">Safety Buffer</span>
+                        <span className="font-bold text-orange-400">15%</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-4">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-widest">Tax & Legal</p>
+                    <InputBlock label="Default VAT / Tax Rate" defaultValue="20" unit="%" />
+                    <div className="flex items-center gap-2 text-[10px] text-gray-500 mt-2">
+                      <Info size={12} /> Automatically applied to line items.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={onManageBilling}
+                className="w-full py-4 rounded-2xl bg-white/5 border border-white/10 text-sm font-bold text-white hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              >
+                <CreditCard size={18} /> Manage Subscription & Billing Details
+              </button>
+            </div>
           )}
 
           {activeSubTab === 'security' && (
             <div className="space-y-8 animate-slide-up">
               <div className="glass p-8 rounded-3xl border border-white/5 space-y-8">
                 <h3 className="text-xl font-bold">Authentication & Security</h3>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-center justify-between p-6 bg-[#13161F] rounded-2xl border border-white/5">
                     <div className="flex items-center gap-4">
@@ -862,10 +857,10 @@ const SettingsPanel = ({ onManageBilling }: any) => {
                 </div>
 
                 <div className="pt-6 border-t border-red-500/10">
-                   <h4 className="text-red-500 font-bold text-sm mb-4">Danger Zone</h4>
-                   <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold hover:bg-red-500 hover:text-white transition-all">
-                     <Trash2 size={16} /> Delete ClosePilot Account
-                   </button>
+                  <h4 className="text-red-500 font-bold text-sm mb-4">Danger Zone</h4>
+                  <button className="flex items-center gap-2 px-6 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold hover:bg-red-500 hover:text-white transition-all">
+                    <Trash2 size={16} /> Delete ClosePilot Account
+                  </button>
                 </div>
               </div>
             </div>
@@ -876,26 +871,26 @@ const SettingsPanel = ({ onManageBilling }: any) => {
               <div className="glass p-8 rounded-3xl border border-white/5 space-y-8">
                 <h3 className="text-xl font-bold">Preferences</h3>
                 <div className="space-y-6">
-                   {[
-                     { label: "Proposal Viewed", desc: "Get notified when a client opens your link.", icon: Eye },
-                     { label: "Proposal Accepted", desc: "Instant alert when a client signs or accepts.", icon: CheckCircle2 },
-                     { label: "Marketing Updates", desc: "Stay tuned for new AI features and templates.", icon: Zap }
-                   ].map((pref, i) => (
-                     <div key={i} className="flex items-center justify-between">
-                       <div className="flex items-center gap-4">
-                         <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-500">
-                           <pref.icon size={20} />
-                         </div>
-                         <div>
-                           <p className="font-bold">{pref.label}</p>
-                           <p className="text-xs text-gray-500">{pref.desc}</p>
-                         </div>
-                       </div>
-                       <div className="w-12 h-6 bg-accent-indigo rounded-full relative cursor-pointer">
-                         <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
-                       </div>
-                     </div>
-                   ))}
+                  {[
+                    { label: "Proposal Viewed", desc: "Get notified when a client opens your link.", icon: Eye },
+                    { label: "Proposal Accepted", desc: "Instant alert when a client signs or accepts.", icon: CheckCircle2 },
+                    { label: "Marketing Updates", desc: "Stay tuned for new AI features and templates.", icon: Zap }
+                  ].map((pref, i) => (
+                    <div key={i} className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-gray-500">
+                          <pref.icon size={20} />
+                        </div>
+                        <div>
+                          <p className="font-bold">{pref.label}</p>
+                          <p className="text-xs text-gray-500">{pref.desc}</p>
+                        </div>
+                      </div>
+                      <div className="w-12 h-6 bg-accent-indigo rounded-full relative cursor-pointer">
+                        <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -920,110 +915,110 @@ const DashboardHome = ({
   <div className="p-8 space-y-14 animate-slide-up">
 
     {/* === HERO DASHBOARD CARDS (LANDING STYLE) === */}
-<div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-8">
 
-  {/* === PRIMARY CARD : NEW PROPOSAL === */}
-  <div
-    onClick={() => onNavigate('new-proposal')}
-    className="group cursor-pointer h-[435px] rounded-3xl glass border border-white/10
+      {/* === PRIMARY CARD : NEW PROPOSAL === */}
+      <div
+        onClick={() => onNavigate('new-proposal')}
+        className="group cursor-pointer h-[435px] rounded-3xl glass border border-white/10
     flex flex-col items-center justify-center text-center p-10
     transition-all duration-500 ease-out
     hover:translate-y-[-4px]
     hover:border-accent-indigo/40
     hover:shadow-[0_0_60px_-10px_rgba(93,95,239,0.35)]"
-  >
-    <div
-      className="w-20 h-20 rounded-full bg-gradient-to-tr from-accent-indigo to-accent-purple
+      >
+        <div
+          className="w-20 h-20 rounded-full bg-gradient-to-tr from-accent-indigo to-accent-purple
       flex items-center justify-center mb-8 shadow-2xl
       transition-all duration-500 ease-out
       group-hover:scale-110
       group-hover:shadow-[0_0_40px_rgba(93,95,239,0.6)]"
-    >
-      <Plus size={40} className="text-white stroke-[3]" />
-    </div>
+        >
+          <Plus size={40} className="text-white stroke-[3]" />
+        </div>
 
-    <h3 className="text-3xl font-display font-bold text-white mb-3">
-      New Proposal
-    </h3>
+        <h3 className="text-3xl font-display font-bold text-white mb-3">
+          New Proposal
+        </h3>
 
-    <p className="text-gray-400 text-[15px] leading-relaxed max-w-[260px] mb-10">
-      Generate a client-ready proposal<br />in under 2 minutes
-    </p>
+        <p className="text-gray-400 text-[15px] leading-relaxed max-w-[260px] mb-10">
+          Generate a client-ready proposal<br />in under 2 minutes
+        </p>
 
-    <div
-      className="inline-flex items-center gap-3 px-12 py-4 rounded-full
+        <div
+          className="inline-flex items-center gap-3 px-12 py-4 rounded-full
       border border-white/10 bg-white/5 text-accent-indigo
       font-bold text-[13px] uppercase tracking-[0.25em]
       transition-all duration-300 ease-out
       group-hover:bg-white/10 group-hover:text-white group-hover:translate-y-[-2px]"
-    >
-      Launch Wizard <ArrowRight className="w-4 h-4" />
-    </div>
-  </div>
+        >
+          Launch Wizard <ArrowRight className="w-4 h-4" />
+        </div>
+      </div>
 
-  {/* === RIGHT STACKED CARDS === */}
-  <div className="flex flex-col gap-8">
+      {/* === RIGHT STACKED CARDS === */}
+      <div className="flex flex-col gap-8">
 
-    {/* PRICING ENGINE */}
-    <div
-      onClick={() => onNavigate('pricing-engine')}
-      className="group cursor-pointer glass border border-white/5 rounded-3xl p-8
+        {/* PRICING ENGINE */}
+        <div
+          onClick={() => onNavigate('pricing-engine')}
+          className="group cursor-pointer glass border border-white/5 rounded-3xl p-8
       transition-all duration-500 ease-out
       hover:translate-y-[-3px]
       hover:border-accent-mint/40
       hover:shadow-[0_0_40px_rgba(110,231,183,0.15)]"
-    >
-      <div
-        className="w-12 h-12 rounded-2xl bg-accent-mint/10
+        >
+          <div
+            className="w-12 h-12 rounded-2xl bg-accent-mint/10
         flex items-center justify-center mb-6
         transition-transform duration-300 ease-out
         group-hover:scale-110"
-      >
-        <Calculator size={24} className="text-accent-mint" />
-      </div>
+          >
+            <Calculator size={24} className="text-accent-mint" />
+          </div>
 
-      <h4 className="text-[19px] font-bold text-white mb-2">
-        Smart Pricing Engine
-      </h4>
+          <h4 className="text-[19px] font-bold text-white mb-2">
+            Smart Pricing Engine
+          </h4>
 
-      <p className="text-[15px] text-gray-500">
-        Automatically calculates pricing based on scope and location.
-      </p>
-    </div>
+          <p className="text-[15px] text-gray-500">
+            Automatically calculates pricing based on scope and location.
+          </p>
+        </div>
 
-    {/* PRO TEMPLATES */}
-    <div
-      onClick={() => onNavigate('templates')}
-      className="group cursor-pointer glass border border-white/5 rounded-3xl p-8
+        {/* PRO TEMPLATES */}
+        <div
+          onClick={() => onNavigate('templates')}
+          className="group cursor-pointer glass border border-white/5 rounded-3xl p-8
       transition-all duration-500 ease-out
       hover:translate-y-[-3px]
       hover:border-accent-purple/40
       hover:shadow-[0_0_40px_rgba(167,139,250,0.15)]"
-    >
-      <div
-        className="w-12 h-12 rounded-2xl bg-accent-purple/10
+        >
+          <div
+            className="w-12 h-12 rounded-2xl bg-accent-purple/10
         flex items-center justify-center mb-6
         transition-transform duration-300 ease-out
         group-hover:scale-110"
-      >
-        <LayoutGrid size={24} className="text-accent-purple" />
+          >
+            <LayoutGrid size={24} className="text-accent-purple" />
+          </div>
+
+          <h4 className="text-[19px] font-bold text-white mb-2">
+            Expert Templates
+          </h4>
+
+          <p className="text-[15px] text-gray-500 mb-4">
+            Marketing • Design • Tech • Creative
+          </p>
+
+          <span className="text-[10px] uppercase font-bold text-accent-purple">
+            50+ templates available
+          </span>
+        </div>
+
       </div>
-
-      <h4 className="text-[19px] font-bold text-white mb-2">
-        Expert Templates
-      </h4>
-
-      <p className="text-[15px] text-gray-500 mb-4">
-        Marketing • Design • Tech • Creative
-      </p>
-
-      <span className="text-[10px] uppercase font-bold text-accent-purple">
-        50+ templates available
-      </span>
     </div>
-
-  </div>
-</div>
 
 
     {/* === ONBOARDING: YOUR SUCCESS MISSION === */}
@@ -1222,31 +1217,31 @@ const TemplateWizard = ({ config, onBack }: { config: TemplateConfig, onBack: ()
       </div>
       <div className="grid md:grid-cols-2 gap-12">
         <div className="space-y-6">
-          <InputBlock label="Client Name" placeholder="e.g. Acme Corp" value={formData.clientName} onChange={(v: string) => setFormData({...formData, clientName: v})} />
+          <InputBlock label="Client Name" placeholder="e.g. Acme Corp" value={formData.clientName} onChange={(v: string) => setFormData({ ...formData, clientName: v })} />
           {config.fields.map(f => (
             <div key={f.name} className="space-y-2 group">
               <label className="text-[11px] font-bold text-gray-500 uppercase tracking-widest ml-1 transition-colors duration-300 group-focus-within:text-accent-indigo">{f.label}</label>
               {f.type === 'textarea' ? (
-                <textarea rows={4} className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 placeholder:text-gray-600 hover:border-white/10" placeholder={f.placeholder} onChange={(e) => setFormData({...formData, [f.name]: e.target.value})} />
+                <textarea rows={4} className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 placeholder:text-gray-600 hover:border-white/10" placeholder={f.placeholder} onChange={(e) => setFormData({ ...formData, [f.name]: e.target.value })} />
               ) : f.type === 'select' ? (
-                <select className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 cursor-pointer hover:border-white/10" onChange={(e) => setFormData({...formData, [f.name]: e.target.value})}>
+                <select className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 cursor-pointer hover:border-white/10" onChange={(e) => setFormData({ ...formData, [f.name]: e.target.value })}>
                   <option value="">{f.placeholder}</option>
                   {f.options?.map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
               ) : (
-                <input type="text" className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 placeholder:text-gray-600 hover:border-white/10" placeholder={f.placeholder} onChange={(e) => setFormData({...formData, [f.name]: e.target.value})} />
+                <input type="text" className="w-full bg-[#13161F] border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/20 transition-all duration-300 placeholder:text-gray-600 hover:border-white/10" placeholder={f.placeholder} onChange={(e) => setFormData({ ...formData, [f.name]: e.target.value })} />
               )}
             </div>
           ))}
         </div>
         <div className="p-8 rounded-3xl bg-gradient-to-br from-accent-indigo/10 to-accent-mint/10 border border-accent-indigo/20 flex flex-col justify-between transition-all duration-500 hover:border-accent-indigo/40 hover:bg-opacity-20">
-           <div>
-             <h3 className="text-xl font-bold mb-3 flex items-center gap-2"><Wand2 className="text-accent-indigo animate-pulse" /> AI Generation</h3>
-             <p className="text-sm text-gray-400 leading-relaxed">Our model will draft an industry-compliant proposal based on your inputs. You can refine everything in the next step.</p>
-           </div>
-           <button onClick={handleGenerate} disabled={isGenerating || !formData.clientName} className="w-full h-14 bg-accent-indigo rounded-2xl font-bold flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-xl hover:shadow-accent-indigo/40 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
-             {isGenerating ? <Loader2 className="animate-spin" /> : <>Generate Proposal <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" /></>}
-           </button>
+          <div>
+            <h3 className="text-xl font-bold mb-3 flex items-center gap-2"><Wand2 className="text-accent-indigo animate-pulse" /> AI Generation</h3>
+            <p className="text-sm text-gray-400 leading-relaxed">Our model will draft an industry-compliant proposal based on your inputs. You can refine everything in the next step.</p>
+          </div>
+          <button onClick={handleGenerate} disabled={isGenerating || !formData.clientName} className="w-full h-14 bg-accent-indigo rounded-2xl font-bold flex items-center justify-center gap-3 transition-all duration-300 hover:shadow-xl hover:shadow-accent-indigo/40 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+            {isGenerating ? <Loader2 className="animate-spin" /> : <>Generate Proposal <ArrowRight size={18} className="transition-transform duration-300 group-hover:translate-x-1" /></>}
+          </button>
         </div>
       </div>
     </div>
@@ -1273,7 +1268,8 @@ const ProposalDetailView = ({ proposal, onBack }: { proposal: ProposalData, onBa
 
 // --- MAIN DASHBOARD COMPONENT ---
 
-const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
+const Dashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<DashboardTab>('dashboard');
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
   const [viewingProposal, setViewingProposal] = useState<ProposalData | null>(null);
@@ -1295,7 +1291,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
   const handleLogout = async () => {
     await signOut(auth);
     localStorage.removeItem('closepilot_user');
-    onBack();
+    navigate({ to: '/' });
   };
 
   const handleUseTemplate = (id: string) => {
@@ -1310,30 +1306,30 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
 
   const renderContent = () => {
     const backToDash = () => setActiveTab('dashboard');
-    
+
     switch (activeTab) {
-      case 'dashboard': 
+      case 'dashboard':
         return <DashboardHome proposals={proposals} onNavigate={setActiveTab} onUseTemplate={handleUseTemplate} onViewProposal={handleViewProposal} />;
-      case 'new-proposal': 
+      case 'new-proposal':
         return <NewProposalView onNavigate={setActiveTab} onUseTemplate={handleUseTemplate} />;
-      case 'wizard': 
+      case 'wizard':
         const config = selectedTemplateId ? TEMPLATE_MAP[selectedTemplateId] : TEMPLATE_MAP['custom'];
         return <TemplateWizard config={config} onBack={backToDash} />;
-      case 'proposal-view': 
+      case 'proposal-view':
         return viewingProposal ? <ProposalDetailView proposal={viewingProposal} onBack={backToDash} /> : null;
-      case 'templates': 
+      case 'templates':
         return <TemplatesLibraryView onUseTemplate={handleUseTemplate} />;
-      case 'saved': 
+      case 'saved':
         return <SavedProposalsView proposals={proposals} onView={handleViewProposal} onNew={() => setActiveTab('new-proposal')} />;
-      case 'settings': 
+      case 'settings':
         return <SettingsPanel onManageBilling={() => setActiveTab('billing')} />;
-      case 'billing': 
+      case 'billing':
         return <BillingView onBack={backToDash} />;
       case 'pricing-engine':
         return <PricingEngineView onBack={backToDash} />;
       case 'brand-sync':
         return <BrandSyncView onBack={backToDash} />;
-      default: 
+      default:
         return <DashboardHome proposals={proposals} onNavigate={setActiveTab} onUseTemplate={handleUseTemplate} onViewProposal={handleViewProposal} />;
     }
   };
@@ -1342,9 +1338,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
     <div className="min-h-screen bg-[#080B13] text-white font-sans flex overflow-hidden selection:bg-accent-indigo selection:text-white">
       {/* SIDEBAR - Styled to match screenshot */}
       <aside className="w-[280px] hidden lg:flex flex-col border-r border-white/5 bg-[#080B13] relative z-20">
-        <div 
+        <div
           className="h-20 flex items-center px-8 border-b border-white/5 gap-3 cursor-pointer group transition-all duration-500 hover:scale-105"
-          onClick={onBack}
+          onClick={() => navigate({ to: '/' })}
         >
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-accent-indigo to-accent-mint flex items-center justify-center shadow-lg transition-all duration-500 group-hover:scale-110">
             <Sparkles className="w-5 h-5 text-white" />
@@ -1363,7 +1359,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
         </nav>
 
         <div className="p-8">
-          <button 
+          <button
             onClick={handleLogout}
             className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 transition-all duration-300"
           >
@@ -1379,8 +1375,8 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
         <header className="h-[88px] border-b border-white/5 flex items-center justify-between px-10 bg-[#080B13] z-30">
           {/* Breadcrumb - Fixed Redirection */}
           <div className="flex items-center gap-3">
-            <button 
-              onClick={onBack}
+            <button
+              onClick={() => navigate({ to: '/' })}
               className="text-[14px] font-bold text-gray-600 hover:text-white transition-colors duration-300"
             >
               Home
@@ -1397,9 +1393,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
           <div className="flex-1 flex justify-center max-w-lg px-8">
             <div className="relative w-full group">
               <Search className="w-4 h-4 text-gray-700 absolute left-4 top-1/2 -translate-y-1/2 group-focus-within:text-accent-indigo transition-colors duration-300" />
-              <input 
-                type="text" 
-                placeholder="Search proposals" 
+              <input
+                type="text"
+                placeholder="Search proposals"
                 className="bg-[#111624] border border-white/5 rounded-full pl-12 pr-4 py-2.5 text-[13px] text-gray-400 focus:outline-none focus:border-accent-indigo/40 focus:ring-1 focus:ring-accent-indigo/10 w-full transition-all duration-300 placeholder:text-gray-700 shadow-inner"
               />
             </div>
@@ -1411,7 +1407,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
               <Bell className="w-5 h-5" />
               <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-accent-indigo rounded-full shadow-[0_0_8px_#5D5FEF] border-2 border-[#080B13]"></span>
             </button>
-            
+
             <div className="flex items-center gap-5 pl-8 border-l border-white/5 group cursor-pointer">
               <div className="flex flex-col items-end">
                 <span className="text-[14px] font-black text-white transition-colors duration-300 group-hover:text-accent-indigo tracking-tight">
@@ -1423,9 +1419,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onBack }) => {
               </div>
               <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-[#5D5FEF] to-[#7C3AED] shadow-xl group-hover:scale-110 transition-transform duration-300">
                 <div className="w-[42px] h-[42px] rounded-full overflow-hidden border-2 border-[#080B13]">
-                  <img 
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80" 
-                    alt="Avatar" 
+                  <img
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80"
+                    alt="Avatar"
                     className="w-full h-full object-cover"
                   />
                 </div>

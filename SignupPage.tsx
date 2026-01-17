@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { Sparkles, ArrowLeft, Chrome, AlertCircle, LogIn, Zap, Loader2, Globe, ExternalLink } from "lucide-react";
-import { Page } from "./components/Navbar";
 import Button from "./components/Button";
 
 // Firebase imports
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
 import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { auth, db } from "./firebase";
+import { useNavigate, Link } from "@tanstack/react-router";
 
-interface SignupPageProps {
-  onNavigate: (page: Page) => void;
-}
-
-const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
+const SignupPage: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -23,6 +19,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
   const [error, setError] = useState("");
   const [emailInUse, setEmailInUse] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -38,18 +35,18 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
         createdAt: serverTimestamp(),
       }, { merge: true });
 
-      localStorage.setItem('closepilot_user', JSON.stringify({ 
-        email: user.email, 
-        name: user.displayName || `${formData.firstName} ${formData.lastName}` || user.email.split('@')[0], 
-        plan: 'free' 
+      localStorage.setItem('closepilot_user', JSON.stringify({
+        email: user.email,
+        name: user.displayName || `${formData.firstName} ${formData.lastName}` || user.email.split('@')[0],
+        plan: 'free'
       }));
       window.dispatchEvent(new Event('storage'));
-      onNavigate("dashboard");
+      navigate({ to: '/dashboard' });
     } catch (err) {
       console.error("Firestore sync failed, but proceeding with local storage", err);
       localStorage.setItem('closepilot_user', JSON.stringify({ email: user.email, name: user.displayName, plan: 'free' }));
       window.dispatchEvent(new Event('storage'));
-      onNavigate("dashboard");
+      navigate({ to: '/dashboard' });
     }
   };
 
@@ -63,7 +60,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
     };
     localStorage.setItem('closepilot_user', JSON.stringify(userData));
     window.dispatchEvent(new Event('storage'));
-    onNavigate("dashboard");
+    navigate({ to: '/dashboard' });
   };
 
   const handleSocialError = (err: any, providerName: string) => {
@@ -142,13 +139,13 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
       <div className="absolute bottom-[-20%] left-[-10%] w-[600px] h-[600px] bg-accent-indigo/5 blur-[120px] rounded-full pointer-events-none" />
 
       {/* Back to Home */}
-      <button
-        onClick={() => onNavigate("landing")}
+      <Link
+        to="/"
         className="absolute top-8 left-8 text-gray-400 hover:text-white flex items-center gap-2 transition-colors group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
         Back to Home
-      </button>
+      </Link>
 
       <div className="w-full max-w-md animate-slide-up relative z-10">
         <div className="flex flex-col items-center mb-8 text-center">
@@ -167,31 +164,31 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
               <div className="flex items-start gap-3">
                 {isDomainError ? <Globe className="w-5 h-5 shrink-0 mt-0.5" /> : <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />}
                 <div className="space-y-1">
-                   <span className="font-bold leading-relaxed">{isDomainError ? "Setup Required" : "Something went wrong"}</span>
-                   <p className="text-xs opacity-80">{error}</p>
+                  <span className="font-bold leading-relaxed">{isDomainError ? "Setup Required" : "Something went wrong"}</span>
+                  <p className="text-xs opacity-80">{error}</p>
                 </div>
               </div>
-              
+
               <div className="grid gap-2">
                 {emailInUse ? (
-                  <button 
-                    onClick={() => onNavigate('login')}
+                  <Link
+                    to="/login"
                     className="w-full py-2.5 bg-accent-indigo text-white rounded-lg text-xs font-bold hover:bg-accent-purple transition-all flex items-center justify-center gap-2 shadow-lg shadow-accent-indigo/20"
                   >
                     <LogIn className="w-4 h-4" /> Go to Login
-                  </button>
+                  </Link>
                 ) : (
                   <>
-                    <button 
+                    <button
                       onClick={handleDemoMode}
                       className={`w-full py-2.5 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-lg ${isDomainError ? 'bg-accent-indigo text-white hover:bg-accent-purple shadow-accent-indigo/20' : 'bg-white/10 hover:bg-white/20 border border-white/10'}`}
                     >
                       <Zap className="w-3.5 h-3.5 text-accent-mint" /> Explore as Guest (Demo)
                     </button>
                     {isDomainError && (
-                      <a 
-                        href="https://console.firebase.google.com/" 
-                        target="_blank" 
+                      <a
+                        href="https://console.firebase.google.com/"
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="w-full py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2"
                       >
@@ -242,7 +239,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-accent-indigo/50 transition-all placeholder:text-gray-600"
               />
             </div>
-            
+
             <div className="space-y-1.5">
               <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Password</label>
               <input
@@ -278,7 +275,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <button 
+            <button
               onClick={handleGoogleSignup}
               disabled={loading || !!socialLoading}
               className="bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition-all disabled:opacity-50"
@@ -286,7 +283,7 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
               {socialLoading === 'google' ? <Loader2 className="w-4 h-4 animate-spin text-accent-indigo" /> : <Chrome className="w-4 h-4" />}
               Google
             </button>
-            <button 
+            <button
               onClick={handleMicrosoftSignup}
               disabled={loading || !!socialLoading}
               className="bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition-all disabled:opacity-50"
@@ -295,10 +292,10 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
                 <Loader2 className="w-4 h-4 animate-spin text-accent-indigo" />
               ) : (
                 <svg className="w-4 h-4" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="#f3f3f3" d="M0 0h11v11H0z"/>
-                  <path fill="#f3f3f3" d="M12 0h11v11H12z"/>
-                  <path fill="#f3f3f3" d="M0 12h11v11H0z"/>
-                  <path fill="#f3f3f3" d="M12 12h11v11H12z"/>
+                  <path fill="#f3f3f3" d="M0 0h11v11H0z" />
+                  <path fill="#f3f3f3" d="M12 0h11v11H12z" />
+                  <path fill="#f3f3f3" d="M0 12h11v11H0z" />
+                  <path fill="#f3f3f3" d="M12 12h11v11H12z" />
                 </svg>
               )}
               Microsoft
@@ -308,12 +305,12 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
 
         <p className="mt-8 text-center text-gray-400 text-sm">
           Already have an account?{" "}
-          <button
-            onClick={() => onNavigate("login")}
+          <Link
+            to="/login"
             className="text-accent-indigo font-bold hover:text-accent-mint transition-colors underline underline-offset-4"
           >
             Log in
-          </button>
+          </Link>
         </p>
       </div>
     </div>

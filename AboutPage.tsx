@@ -1,16 +1,17 @@
 import React from 'react';
-import Navbar, { Page } from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SectionHeader from './components/SectionHeader';
+import { Link } from '@tanstack/react-router';
 
-const AboutPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate }) => {
+const AboutPage: React.FC = () => {
   return (
     <div className="bg-navy-900 min-h-screen text-white">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar />
       <div className="pt-32 pb-20">
-        <SectionHeader 
-          title="The Future of Closing" 
-          subtitle="ClosePilot was born out of a simple observation: writing proposals is the single biggest bottleneck for creative growth." 
+        <SectionHeader
+          title="The Future of Closing"
+          subtitle="ClosePilot was born out of a simple observation: writing proposals is the single biggest bottleneck for creative growth."
         />
         <div className="max-w-4xl mx-auto px-6 space-y-12 text-gray-400 leading-relaxed">
           <section className="space-y-6">
@@ -46,9 +47,9 @@ const AboutPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate 
 
           <section className="text-center pt-12">
             <h2 className="text-3xl font-bold text-white mb-6">Want to see us in action?</h2>
-            <button 
-              onClick={() => onNavigate('signup')}
-              className="px-8 py-4 
+            <Link
+              to="/signup"
+              className="px-8 py-4 inline-block
 bg-gradient-to-br from-accent-indigo via-accent-purple to-accent-indigo
 rounded-2xl 
 font-semibold tracking-wide
@@ -59,12 +60,12 @@ hover:scale-[1.04]
 active:scale-[0.97]
 transition-all duration-300 ease-out"
             >
-              Start Your Free Trial
-            </button>
+              Start You Free Trial
+            </Link>
           </section>
         </div>
       </div>
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 };

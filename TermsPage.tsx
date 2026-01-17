@@ -1,12 +1,12 @@
 import React from 'react';
-import Navbar, { Page } from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SectionHeader from './components/SectionHeader';
 
-const TermsPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate }) => {
+const TermsPage: React.FC = () => {
   return (
     <div className="bg-navy-900 min-h-screen text-white">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar />
       <div className="pt-32 pb-20">
         <SectionHeader title="Terms of Service" subtitle="Last updated: October 24, 2025" />
         <div className="max-w-3xl mx-auto px-6 text-gray-400 space-y-8 leading-relaxed">
@@ -66,7 +66,7 @@ const TermsPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate 
           </section>
         </div>
       </div>
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 };

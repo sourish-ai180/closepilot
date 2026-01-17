@@ -1,12 +1,12 @@
 import React from 'react';
-import Navbar, { Page } from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SectionHeader from './components/SectionHeader';
 
-const PrivacyPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate }) => {
+const PrivacyPage: React.FC = () => {
   return (
     <div className="bg-navy-900 min-h-screen text-white">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar />
       <div className="pt-32 pb-20">
         <SectionHeader title="Privacy Policy" subtitle="Last updated: October 24, 2025" />
         <div className="max-w-3xl mx-auto px-6 text-gray-400 space-y-8 leading-relaxed">
@@ -69,7 +69,7 @@ const PrivacyPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigat
           </section>
         </div>
       </div>
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 };

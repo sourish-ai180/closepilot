@@ -12,14 +12,11 @@ import {
   LayoutGrid
 } from 'lucide-react';
 import Button from './Button';
-import { Page } from './Navbar';
+import { useNavigate } from '@tanstack/react-router';
 
-interface HeroProps {
-  onNavigate: (page: Page) => void;
-}
-
-const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
+const Hero: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsVisible(true);
@@ -62,7 +59,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               variant="primary"
               icon={<ArrowRight className="w-4 h-4" />}
               className="h-14 text-lg"
-              onClick={() => onNavigate('signup')}
+              onClick={() => navigate({ to: '/signup' })}
             >
               Start Free Trial
             </Button>
@@ -72,7 +69,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             <Button
               variant="outline"
               className="h-14 text-lg"
-              onClick={() => onNavigate('features')}
+              onClick={() => navigate({ to: '/features' })}
             >
               <Play className="w-4 h-4" /> Watch Demo
             </Button>
@@ -122,9 +119,9 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
               {/* USER AVATAR */}
               <div className="relative p-[2px] rounded-full bg-gradient-to-tr from-accent-indigo to-accent-purple shadow-xl group/avatar cursor-pointer transition-transform duration-700 hover:scale-115">
                 <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-[#0B0F19]">
-                  <img 
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80" 
-                    alt="User" 
+                  <img
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=128&h=128&q=80"
+                    alt="User"
                     className="w-full h-full object-cover grayscale transition-all duration-700 group-hover/avatar:grayscale-0"
                   />
                 </div>
@@ -137,7 +134,7 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
             {/* LEFT PRIMARY CARD */}
             <div
-              onClick={() => onNavigate('signup')}
+              onClick={() => navigate({ to: '/signup' })}
               className="group h-[445px] rounded-3xl glass border border-white/10
               flex flex-col items-center justify-center text-center p-8
               transition-all duration-500 ease-out
@@ -222,28 +219,25 @@ const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         <div className="mt-14 flex flex-col items-center gap-3">
           <p className="text-sm md:text-lg text-gray-500 flex items-center gap-2">
             <ShieldCheck
-  size={16}
-  className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.6)]"
-/>
+              size={16}
+              className="text-emerald-400 drop-shadow-[0_0_6px_rgba(52,211,153,0.6)]"
+            />
             Everything unlocks after signup — no setup required
           </p>
 
           {/* REASSURANCE LINK */}
           <button
-  onClick={() => onNavigate('features')}
-  className="
-    text-sm md:text-lg
-    text-gray-400/60
-    transition-all duration-300 ease-out
-    hover:text-gray-400
-    hover:translate-x-1
-  "
->
-  Explore a sample proposal →
-</button>
-
-
-
+            onClick={() => navigate({ to: '/features' })}
+            className="
+              text-sm md:text-lg
+              text-gray-400/60
+              transition-all duration-300 ease-out
+              hover:text-gray-400
+              hover:translate-x-1
+            "
+          >
+            Explore a sample proposal →
+          </button>
         </div>
       </div>
     </section>

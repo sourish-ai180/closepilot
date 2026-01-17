@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-import { Sparkles, ArrowLeft, Chrome, AlertCircle, ShieldAlert, Zap, Loader2, Globe, ExternalLink } from "lucide-react";
+import { Sparkles, ArrowLeft, Chrome, ShieldAlert, Zap, Loader2, Globe, ExternalLink } from "lucide-react";
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider } from "firebase/auth";
 import { auth } from "./firebase";
-import { Page } from "./components/Navbar";
 import Button from "./components/Button";
+import { useNavigate, Link } from "@tanstack/react-router";
 
-interface LoginPageProps {
-  onNavigate: (page: Page) => void;
-}
-
-const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
+const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleAuthSuccess = (user: any) => {
     const userData = {
@@ -27,7 +24,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     };
     localStorage.setItem('closepilot_user', JSON.stringify(userData));
     window.dispatchEvent(new Event('storage'));
-    onNavigate("dashboard");
+    navigate({ to: '/dashboard' });
   };
 
   const handleDemoLogin = () => {
@@ -41,7 +38,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     };
     localStorage.setItem('closepilot_user', JSON.stringify(userData));
     window.dispatchEvent(new Event('storage'));
-    onNavigate("dashboard");
+    navigate({ to: '/dashboard' });
   };
 
   const handleSocialError = (err: any, providerName: string) => {
@@ -115,13 +112,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
       <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-accent-indigo/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-accent-mint/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <button
-        onClick={() => onNavigate("landing")}
+      <Link
+        to="/"
         className="absolute top-8 left-8 text-gray-400 hover:text-white flex items-center gap-2 transition-all group"
       >
         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
         Back to Home
-      </button>
+      </Link>
 
       <div className="w-full max-w-md animate-slide-up relative z-10">
         <div className="flex flex-col items-center mb-8 text-center">
@@ -140,27 +137,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               <div className="flex items-start gap-3 mb-4">
                 {isDomainError ? <Globe className="w-5 h-5 shrink-0 mt-0.5" /> : <ShieldAlert className="w-5 h-5 shrink-0 mt-0.5" />}
                 <div className="space-y-2">
-                   <span className="font-bold leading-relaxed">{isDomainError ? "Configuration Required" : "Authentication Error"}</span>
-                   <p className="text-xs opacity-80 leading-relaxed">{error}</p>
+                  <span className="font-bold leading-relaxed">{isDomainError ? "Configuration Required" : "Authentication Error"}</span>
+                  <p className="text-xs opacity-80 leading-relaxed">{error}</p>
                 </div>
               </div>
-              
+
               <div className="grid gap-2">
-                <button 
+                <button
                   onClick={handleDemoLogin}
                   className={`w-full py-2.5 rounded-lg text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-2 ${isDomainError ? 'bg-accent-indigo text-white hover:bg-accent-purple shadow-accent-indigo/20' : 'bg-red-500 text-white hover:bg-red-600 shadow-red-500/20'}`}
                 >
                   <Zap className="w-3.5 h-3.5" /> Continue via Demo Mode
                 </button>
                 {isDomainError && (
-                   <a 
-                     href="https://console.firebase.google.com/" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="w-full py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2"
-                   >
-                     Firebase Console <ExternalLink size={10} />
-                   </a>
+                  <a
+                    href="https://console.firebase.google.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white rounded-lg text-[10px] font-bold uppercase tracking-widest flex items-center justify-center gap-2"
+                  >
+                    Firebase Console <ExternalLink size={10} />
+                  </a>
                 )}
               </div>
             </div>
@@ -178,7 +175,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-accent-indigo/50 focus:ring-1 focus:ring-accent-indigo/50 transition-all placeholder:text-gray-600"
               />
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex justify-between items-center ml-1">
                 <label className="text-xs font-semibold text-gray-500 uppercase tracking-widest">Password</label>
@@ -216,7 +213,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <button 
+            <button
               onClick={handleGoogleLogin}
               disabled={loading || !!socialLoading}
               className="bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition-all group disabled:opacity-50"
@@ -224,7 +221,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
               {socialLoading === 'google' ? <Loader2 className="w-4 h-4 animate-spin text-accent-indigo" /> : <Chrome className="w-4 h-4" />}
               Google
             </button>
-            <button 
+            <button
               onClick={handleMicrosoftLogin}
               disabled={loading || !!socialLoading}
               className="bg-white/5 border border-white/10 hover:bg-white/10 py-3 rounded-xl text-xs font-bold flex justify-center items-center gap-2 transition-all group disabled:opacity-50"
@@ -233,10 +230,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
                 <Loader2 className="w-4 h-4 animate-spin text-accent-indigo" />
               ) : (
                 <svg className="w-4 h-4" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
-                  <path fill="#f3f3f3" d="M0 0h11v11H0z"/>
-                  <path fill="#f3f3f3" d="M12 0h11v11H12z"/>
-                  <path fill="#f3f3f3" d="M0 12h11v11H0z"/>
-                  <path fill="#f3f3f3" d="M12 12h11v11H12z"/>
+                  <path fill="#f3f3f3" d="M0 0h11v11H0z" />
+                  <path fill="#f3f3f3" d="M12 0h11v11H12z" />
+                  <path fill="#f3f3f3" d="M0 12h11v11H0z" />
+                  <path fill="#f3f3f3" d="M12 12h11v11H12z" />
                 </svg>
               )}
               Microsoft
@@ -246,12 +243,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
 
         <p className="mt-8 text-center text-gray-400 text-sm">
           Don’t have an account?{" "}
-          <button
-            onClick={() => onNavigate("signup")}
+          <Link
+            to="/signup"
             className="text-accent-indigo font-bold hover:text-accent-mint transition-colors underline underline-offset-4"
           >
             Sign up for free
-          </button>
+          </Link>
         </p>
       </div>
     </div>

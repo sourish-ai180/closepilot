@@ -1,20 +1,21 @@
 import React from 'react';
-import Navbar, { Page } from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SectionHeader from './components/SectionHeader';
 import Button from './components/Button';
 import { Mail, MessageCircle, MapPin, Twitter, Linkedin, Github } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 
-const ContactPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate }) => {
+const ContactPage: React.FC = () => {
   return (
     <div className="bg-navy-900 min-h-screen text-white">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar />
       <div className="pt-32 pb-20">
-        <SectionHeader 
-          title="Get in Touch" 
-          subtitle="Have a question or need a custom plan for your agency? We're here to help you close more deals." 
+        <SectionHeader
+          title="Get in Touch"
+          subtitle="Have a question or need a custom plan for your agency? We're here to help you close more deals."
         />
-        
+
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-3 gap-12">
           {/* Left Side: Contact Info */}
           <div className="lg:col-span-1 space-y-10">
@@ -78,67 +79,67 @@ const ContactPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigat
           <div className="lg:col-span-2">
             <div className="glass p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-accent-indigo/5 blur-3xl -mr-32 -mt-32 pointer-events-none" />
-              
+
               <form className="space-y-6 relative z-10" onSubmit={(e) => e.preventDefault()}>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-300">First Name</label>
-                    <input 
-                      type="text" 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600" 
-                      placeholder="Jane" 
+                    <input
+                      type="text"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600"
+                      placeholder="Jane"
                     />
                   </div>
                   <div className="space-y-2">
                     <label className="text-sm font-medium text-gray-300">Last Name</label>
-                    <input 
-                      type="text" 
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600" 
-                      placeholder="Doe" 
+                    <input
+                      type="text"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600"
+                      placeholder="Doe"
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">Email Address</label>
-                  <input 
-                    type="email" 
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600" 
-                    placeholder="jane@example.com" 
+                  <input
+                    type="email"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600"
+                    placeholder="jane@example.com"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">Company Website (Optional)</label>
-                  <input 
-                    type="url" 
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600" 
-                    placeholder="https://youragency.com" 
+                  <input
+                    type="url"
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600"
+                    placeholder="https://youragency.com"
                   />
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-sm font-medium text-gray-300">How can we help?</label>
-                  <textarea 
-                    rows={5} 
-                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600" 
-                    placeholder="Tell us about your project or inquiry..." 
+                  <textarea
+                    rows={5}
+                    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-accent-indigo transition-all placeholder:text-gray-600"
+                    placeholder="Tell us about your project or inquiry..."
                   />
                 </div>
 
                 <Button variant="primary" className="w-full py-5 text-lg shadow-xl shadow-accent-indigo/20">
                   Send Message
                 </Button>
-                
+
                 <p className="text-center text-xs text-gray-500">
-                  By submitting this form, you agree to our <button onClick={() => onNavigate('privacy')} className="underline">Privacy Policy</button>.
+                  By submitting this form, you agree to our <Link to="/privacy" className="underline">Privacy Policy</Link>.
                 </p>
               </form>
             </div>
           </div>
         </div>
       </div>
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 };

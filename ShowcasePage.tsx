@@ -1,9 +1,10 @@
 import React from 'react';
-import Navbar, { Page } from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SectionHeader from './components/SectionHeader';
 import { Eye, Heart, Share2, Sparkles, ArrowRight } from 'lucide-react';
 import Button from './components/Button';
+import { useNavigate } from '@tanstack/react-router';
 
 const SHOWCASE_ITEMS = [
   {
@@ -56,36 +57,37 @@ const SHOWCASE_ITEMS = [
   }
 ];
 
-const ShowcasePage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate }) => {
+const ShowcasePage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-navy-900 min-h-screen text-white">
-      <Navbar onNavigate={onNavigate} />
-      
+      <Navbar />
+
       <div className="pt-32 pb-24 relative overflow-hidden">
         {/* Decorative Ambience */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-accent-indigo/5 blur-[120px] rounded-full pointer-events-none" />
 
-        <SectionHeader 
-          title="Community Showcase" 
-          subtitle="Discover high-converting proposals built by our talented community of freelancers and agencies." 
+        <SectionHeader
+          title="Community Showcase"
+          subtitle="Discover high-converting proposals built by our talented community of freelancers and agencies."
         />
 
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {SHOWCASE_ITEMS.map((item, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className="group relative rounded-[2rem] overflow-hidden glass border border-white/5 transition-all duration-700 hover:border-accent-indigo/40 hover:translate-y-[-8px] hover:shadow-[0_20px_50px_rgba(93,95,239,0.15)]"
               >
                 {/* Image Wrap */}
                 <div className="h-64 relative overflow-hidden">
-                  <img 
-                    src={item.image} 
-                    alt={item.title} 
+                  <img
+                    src={item.image}
+                    alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:opacity-60"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-navy-900 to-transparent opacity-60" />
-                  
+
                   {/* Category Tag */}
                   <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-navy-900/80 backdrop-blur-md text-[10px] font-black uppercase tracking-widest border border-white/10 text-accent-indigo">
                     {item.category}
@@ -138,11 +140,11 @@ const ShowcasePage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNaviga
                 Join thousands of creators using ClosePilot to automate their sales workflow and close high-ticket clients.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Button variant="primary" className="h-14 px-10 text-lg" onClick={() => onNavigate('signup')}>
+                <Button variant="primary" className="h-14 px-10 text-lg" onClick={() => navigate({ to: '/signup' })}>
                   Start Building Now <ArrowRight size={18} className="ml-2" />
                 </Button>
-                <button 
-                  onClick={() => onNavigate('pricing')}
+                <button
+                  onClick={() => navigate({ to: '/pricing' })}
                   className="text-gray-500 font-bold hover:text-white transition-colors flex items-center gap-2 group/btn"
                 >
                   View Pricing Plans <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
@@ -153,7 +155,7 @@ const ShowcasePage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNaviga
         </div>
       </div>
 
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 };

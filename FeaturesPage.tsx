@@ -1,31 +1,28 @@
 
 import React from 'react';
-import Navbar, { Page } from './components/Navbar';
+import Navbar from './components/Navbar';
 import Features from './components/Features';
 import Footer from './components/Footer';
 import { ArrowLeft } from 'lucide-react';
+import { Link } from '@tanstack/react-router';
 
-interface PageProps {
-  onNavigate: (page: Page) => void;
-}
-
-const FeaturesPage: React.FC<PageProps> = ({ onNavigate }) => {
+const FeaturesPage: React.FC = () => {
   return (
     <div className="w-full relative min-h-screen flex flex-col bg-navy-900">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar />
       <div className="pt-32 flex-1">
         <div className="max-w-7xl mx-auto px-6 mb-12">
-          <button 
-            onClick={() => onNavigate('landing')}
+          <Link
+            to="/"
             className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group mb-8"
           >
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
             Back to Home
-          </button>
+          </Link>
         </div>
         <Features />
       </div>
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 };

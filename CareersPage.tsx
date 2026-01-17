@@ -1,5 +1,5 @@
 import React from 'react';
-import Navbar, { Page } from './components/Navbar';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SectionHeader from './components/SectionHeader';
 import { Coffee, Globe, Heart, Rocket, Zap, ShieldCheck, Mail } from 'lucide-react';
@@ -11,16 +11,16 @@ const benefits = [
   { icon: Coffee, title: "Stipends", desc: "Monthly stipends for co-working spaces, home office gear, and learning." },
 ];
 
-const CareersPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigate }) => {
+const CareersPage: React.FC = () => {
   return (
     <div className="bg-navy-900 min-h-screen text-white">
-      <Navbar onNavigate={onNavigate} />
+      <Navbar />
       <div className="pt-32 pb-20">
-        <SectionHeader 
-          title="Join the Pilot Program" 
-          subtitle="We are a small, elite team building the future of B2B sales. We're looking for builders, dreamers, and doers." 
+        <SectionHeader
+          title="Join the Pilot Program"
+          subtitle="We are a small, elite team building the future of B2B sales. We're looking for builders, dreamers, and doers."
         />
-        
+
         {/* Culture Section */}
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 mb-24 items-center">
           <div className="space-y-6">
@@ -72,7 +72,7 @@ const CareersPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigat
               <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
                 We are always looking for exceptional talent to join our mission. If you're a high-performer who wants to build something meaningful, we'd love to hear from you.
               </p>
-              <a 
+              <a
                 href="mailto:careers@closepilot.com"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-white text-navy-900 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all shadow-xl hover:scale-105"
               >
@@ -85,7 +85,7 @@ const CareersPage: React.FC<{ onNavigate: (page: Page) => void }> = ({ onNavigat
           </div>
         </div>
       </div>
-      <Footer onNavigate={onNavigate} />
+      <Footer />
     </div>
   );
 };
