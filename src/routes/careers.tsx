@@ -101,7 +101,7 @@ function CareersPage() {
         {/* General Application CTA */}
         <div className="max-w-4xl mx-auto px-6 text-center">
           <div className="glass p-12 rounded-[3rem] border border-white/5 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-accent-indigo/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            <div className="absolute inset-0 from-accent-indigo/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative z-10">
               <Mail className="w-12 h-12 text-accent-indigo mx-auto mb-6" />
               <h2 className="text-3xl font-bold mb-4">No Open Positions?</h2>

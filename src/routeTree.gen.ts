@@ -20,10 +20,25 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardSaved_proposalsRouteImport } from './routes/dashboard/saved_proposals'
+import { Route as DashboardPricing_engineRouteImport } from './routes/dashboard/pricing_engine'
+import { Route as DashboardBrand_syncRouteImport } from './routes/dashboard/brand_sync'
+import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
+import { Route as DashboardWizardIndexRouteImport } from './routes/dashboard/wizard/index'
+import { Route as DashboardTemplatesIndexRouteImport } from './routes/dashboard/templates/index'
+import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
+import { Route as DashboardProposalIndexRouteImport } from './routes/dashboard/proposal/index'
+import { Route as DashboardTemplatesTnameRouteImport } from './routes/dashboard/templates/$tname'
+import { Route as DashboardSettingsSecurityRouteImport } from './routes/dashboard/settings/security'
+import { Route as DashboardSettingsProfileRouteImport } from './routes/dashboard/settings/profile'
+import { Route as DashboardSettingsPricing_engineRouteImport } from './routes/dashboard/settings/pricing_engine'
+import { Route as DashboardSettingsNotificationsRouteImport } from './routes/dashboard/settings/notifications'
+import { Route as DashboardSettingsBrandLogosRouteImport } from './routes/dashboard/settings/brand-logos'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -80,6 +95,11 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -96,13 +116,90 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
+const DashboardSaved_proposalsRoute =
+  DashboardSaved_proposalsRouteImport.update({
+    id: '/saved_proposals',
+    path: '/saved_proposals',
+    getParentRoute: () => DashboardRouteRoute,
+  } as any)
+const DashboardPricing_engineRoute = DashboardPricing_engineRouteImport.update({
+  id: '/pricing_engine',
+  path: '/pricing_engine',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardBrand_syncRoute = DashboardBrand_syncRouteImport.update({
+  id: '/brand_sync',
+  path: '/brand_sync',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardSettingsRouteRoute = DashboardSettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardWizardIndexRoute = DashboardWizardIndexRouteImport.update({
+  id: '/wizard/',
+  path: '/wizard/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardTemplatesIndexRoute = DashboardTemplatesIndexRouteImport.update({
+  id: '/templates/',
+  path: '/templates/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardSettingsRouteRoute,
+} as any)
+const DashboardProposalIndexRoute = DashboardProposalIndexRouteImport.update({
+  id: '/proposal/',
+  path: '/proposal/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardTemplatesTnameRoute = DashboardTemplatesTnameRouteImport.update({
+  id: '/templates/$tname',
+  path: '/templates/$tname',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardSettingsSecurityRoute =
+  DashboardSettingsSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
+const DashboardSettingsProfileRoute =
+  DashboardSettingsProfileRouteImport.update({
+    id: '/profile',
+    path: '/profile',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
+const DashboardSettingsPricing_engineRoute =
+  DashboardSettingsPricing_engineRouteImport.update({
+    id: '/pricing_engine',
+    path: '/pricing_engine',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
+const DashboardSettingsNotificationsRoute =
+  DashboardSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
+const DashboardSettingsBrandLogosRoute =
+  DashboardSettingsBrandLogosRouteImport.update({
+    id: '/brand-logos',
+    path: '/brand-logos',
+    getParentRoute: () => DashboardSettingsRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
@@ -114,9 +211,23 @@ export interface FileRoutesByFullPath {
   '/showcase': typeof ShowcaseRoute
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
-  '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
+  '/dashboard/brand_sync': typeof DashboardBrand_syncRoute
+  '/dashboard/pricing_engine': typeof DashboardPricing_engineRoute
+  '/dashboard/saved_proposals': typeof DashboardSaved_proposalsRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/login': typeof LoginIndexRoute
   '/signup': typeof SignupIndexRoute
+  '/dashboard/settings/brand-logos': typeof DashboardSettingsBrandLogosRoute
+  '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
+  '/dashboard/settings/pricing_engine': typeof DashboardSettingsPricing_engineRoute
+  '/dashboard/settings/profile': typeof DashboardSettingsProfileRoute
+  '/dashboard/settings/security': typeof DashboardSettingsSecurityRoute
+  '/dashboard/templates/$tname': typeof DashboardTemplatesTnameRoute
+  '/dashboard/proposal': typeof DashboardProposalIndexRoute
+  '/dashboard/settings/': typeof DashboardSettingsIndexRoute
+  '/dashboard/templates': typeof DashboardTemplatesIndexRoute
+  '/dashboard/wizard': typeof DashboardWizardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -131,13 +242,27 @@ export interface FileRoutesByTo {
   '/showcase': typeof ShowcaseRoute
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
+  '/dashboard/brand_sync': typeof DashboardBrand_syncRoute
+  '/dashboard/pricing_engine': typeof DashboardPricing_engineRoute
+  '/dashboard/saved_proposals': typeof DashboardSaved_proposalsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/login': typeof LoginIndexRoute
   '/signup': typeof SignupIndexRoute
+  '/dashboard/settings/brand-logos': typeof DashboardSettingsBrandLogosRoute
+  '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
+  '/dashboard/settings/pricing_engine': typeof DashboardSettingsPricing_engineRoute
+  '/dashboard/settings/profile': typeof DashboardSettingsProfileRoute
+  '/dashboard/settings/security': typeof DashboardSettingsSecurityRoute
+  '/dashboard/templates/$tname': typeof DashboardTemplatesTnameRoute
+  '/dashboard/proposal': typeof DashboardProposalIndexRoute
+  '/dashboard/settings': typeof DashboardSettingsIndexRoute
+  '/dashboard/templates': typeof DashboardTemplatesIndexRoute
+  '/dashboard/wizard': typeof DashboardWizardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/blog': typeof BlogRoute
   '/careers': typeof CareersRoute
@@ -149,14 +274,29 @@ export interface FileRoutesById {
   '/showcase': typeof ShowcaseRoute
   '/templates': typeof TemplatesRoute
   '/terms': typeof TermsRoute
+  '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
+  '/dashboard/brand_sync': typeof DashboardBrand_syncRoute
+  '/dashboard/pricing_engine': typeof DashboardPricing_engineRoute
+  '/dashboard/saved_proposals': typeof DashboardSaved_proposalsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/login/': typeof LoginIndexRoute
   '/signup/': typeof SignupIndexRoute
+  '/dashboard/settings/brand-logos': typeof DashboardSettingsBrandLogosRoute
+  '/dashboard/settings/notifications': typeof DashboardSettingsNotificationsRoute
+  '/dashboard/settings/pricing_engine': typeof DashboardSettingsPricing_engineRoute
+  '/dashboard/settings/profile': typeof DashboardSettingsProfileRoute
+  '/dashboard/settings/security': typeof DashboardSettingsSecurityRoute
+  '/dashboard/templates/$tname': typeof DashboardTemplatesTnameRoute
+  '/dashboard/proposal/': typeof DashboardProposalIndexRoute
+  '/dashboard/settings/': typeof DashboardSettingsIndexRoute
+  '/dashboard/templates/': typeof DashboardTemplatesIndexRoute
+  '/dashboard/wizard/': typeof DashboardWizardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/dashboard'
     | '/about'
     | '/blog'
     | '/careers'
@@ -168,9 +308,23 @@ export interface FileRouteTypes {
     | '/showcase'
     | '/templates'
     | '/terms'
-    | '/dashboard'
+    | '/dashboard/settings'
+    | '/dashboard/brand_sync'
+    | '/dashboard/pricing_engine'
+    | '/dashboard/saved_proposals'
+    | '/dashboard/'
     | '/login'
     | '/signup'
+    | '/dashboard/settings/brand-logos'
+    | '/dashboard/settings/notifications'
+    | '/dashboard/settings/pricing_engine'
+    | '/dashboard/settings/profile'
+    | '/dashboard/settings/security'
+    | '/dashboard/templates/$tname'
+    | '/dashboard/proposal'
+    | '/dashboard/settings/'
+    | '/dashboard/templates'
+    | '/dashboard/wizard'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -185,12 +339,26 @@ export interface FileRouteTypes {
     | '/showcase'
     | '/templates'
     | '/terms'
+    | '/dashboard/brand_sync'
+    | '/dashboard/pricing_engine'
+    | '/dashboard/saved_proposals'
     | '/dashboard'
     | '/login'
     | '/signup'
+    | '/dashboard/settings/brand-logos'
+    | '/dashboard/settings/notifications'
+    | '/dashboard/settings/pricing_engine'
+    | '/dashboard/settings/profile'
+    | '/dashboard/settings/security'
+    | '/dashboard/templates/$tname'
+    | '/dashboard/proposal'
+    | '/dashboard/settings'
+    | '/dashboard/templates'
+    | '/dashboard/wizard'
   id:
     | '__root__'
     | '/'
+    | '/dashboard'
     | '/about'
     | '/blog'
     | '/careers'
@@ -202,13 +370,28 @@ export interface FileRouteTypes {
     | '/showcase'
     | '/templates'
     | '/terms'
+    | '/dashboard/settings'
+    | '/dashboard/brand_sync'
+    | '/dashboard/pricing_engine'
+    | '/dashboard/saved_proposals'
     | '/dashboard/'
     | '/login/'
     | '/signup/'
+    | '/dashboard/settings/brand-logos'
+    | '/dashboard/settings/notifications'
+    | '/dashboard/settings/pricing_engine'
+    | '/dashboard/settings/profile'
+    | '/dashboard/settings/security'
+    | '/dashboard/templates/$tname'
+    | '/dashboard/proposal/'
+    | '/dashboard/settings/'
+    | '/dashboard/templates/'
+    | '/dashboard/wizard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   BlogRoute: typeof BlogRoute
   CareersRoute: typeof CareersRoute
@@ -220,7 +403,6 @@ export interface RootRouteChildren {
   ShowcaseRoute: typeof ShowcaseRoute
   TemplatesRoute: typeof TemplatesRoute
   TermsRoute: typeof TermsRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   SignupIndexRoute: typeof SignupIndexRoute
 }
@@ -304,6 +486,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -327,16 +516,167 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/': {
       id: '/dashboard/'
-      path: '/dashboard'
-      fullPath: '/dashboard'
+      path: '/'
+      fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/saved_proposals': {
+      id: '/dashboard/saved_proposals'
+      path: '/saved_proposals'
+      fullPath: '/dashboard/saved_proposals'
+      preLoaderRoute: typeof DashboardSaved_proposalsRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/pricing_engine': {
+      id: '/dashboard/pricing_engine'
+      path: '/pricing_engine'
+      fullPath: '/dashboard/pricing_engine'
+      preLoaderRoute: typeof DashboardPricing_engineRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/brand_sync': {
+      id: '/dashboard/brand_sync'
+      path: '/brand_sync'
+      fullPath: '/dashboard/brand_sync'
+      preLoaderRoute: typeof DashboardBrand_syncRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/wizard/': {
+      id: '/dashboard/wizard/'
+      path: '/wizard'
+      fullPath: '/dashboard/wizard'
+      preLoaderRoute: typeof DashboardWizardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/templates/': {
+      id: '/dashboard/templates/'
+      path: '/templates'
+      fullPath: '/dashboard/templates'
+      preLoaderRoute: typeof DashboardTemplatesIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/settings/': {
+      id: '/dashboard/settings/'
+      path: '/'
+      fullPath: '/dashboard/settings/'
+      preLoaderRoute: typeof DashboardSettingsIndexRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
+    '/dashboard/proposal/': {
+      id: '/dashboard/proposal/'
+      path: '/proposal'
+      fullPath: '/dashboard/proposal'
+      preLoaderRoute: typeof DashboardProposalIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/templates/$tname': {
+      id: '/dashboard/templates/$tname'
+      path: '/templates/$tname'
+      fullPath: '/dashboard/templates/$tname'
+      preLoaderRoute: typeof DashboardTemplatesTnameRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/settings/security': {
+      id: '/dashboard/settings/security'
+      path: '/security'
+      fullPath: '/dashboard/settings/security'
+      preLoaderRoute: typeof DashboardSettingsSecurityRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
+    '/dashboard/settings/profile': {
+      id: '/dashboard/settings/profile'
+      path: '/profile'
+      fullPath: '/dashboard/settings/profile'
+      preLoaderRoute: typeof DashboardSettingsProfileRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
+    '/dashboard/settings/pricing_engine': {
+      id: '/dashboard/settings/pricing_engine'
+      path: '/pricing_engine'
+      fullPath: '/dashboard/settings/pricing_engine'
+      preLoaderRoute: typeof DashboardSettingsPricing_engineRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
+    '/dashboard/settings/notifications': {
+      id: '/dashboard/settings/notifications'
+      path: '/notifications'
+      fullPath: '/dashboard/settings/notifications'
+      preLoaderRoute: typeof DashboardSettingsNotificationsRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
+    }
+    '/dashboard/settings/brand-logos': {
+      id: '/dashboard/settings/brand-logos'
+      path: '/brand-logos'
+      fullPath: '/dashboard/settings/brand-logos'
+      preLoaderRoute: typeof DashboardSettingsBrandLogosRouteImport
+      parentRoute: typeof DashboardSettingsRouteRoute
     }
   }
 }
 
+interface DashboardSettingsRouteRouteChildren {
+  DashboardSettingsBrandLogosRoute: typeof DashboardSettingsBrandLogosRoute
+  DashboardSettingsNotificationsRoute: typeof DashboardSettingsNotificationsRoute
+  DashboardSettingsPricing_engineRoute: typeof DashboardSettingsPricing_engineRoute
+  DashboardSettingsProfileRoute: typeof DashboardSettingsProfileRoute
+  DashboardSettingsSecurityRoute: typeof DashboardSettingsSecurityRoute
+  DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
+}
+
+const DashboardSettingsRouteRouteChildren: DashboardSettingsRouteRouteChildren =
+  {
+    DashboardSettingsBrandLogosRoute: DashboardSettingsBrandLogosRoute,
+    DashboardSettingsNotificationsRoute: DashboardSettingsNotificationsRoute,
+    DashboardSettingsPricing_engineRoute: DashboardSettingsPricing_engineRoute,
+    DashboardSettingsProfileRoute: DashboardSettingsProfileRoute,
+    DashboardSettingsSecurityRoute: DashboardSettingsSecurityRoute,
+    DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
+  }
+
+const DashboardSettingsRouteRouteWithChildren =
+  DashboardSettingsRouteRoute._addFileChildren(
+    DashboardSettingsRouteRouteChildren,
+  )
+
+interface DashboardRouteRouteChildren {
+  DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren
+  DashboardBrand_syncRoute: typeof DashboardBrand_syncRoute
+  DashboardPricing_engineRoute: typeof DashboardPricing_engineRoute
+  DashboardSaved_proposalsRoute: typeof DashboardSaved_proposalsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardTemplatesTnameRoute: typeof DashboardTemplatesTnameRoute
+  DashboardProposalIndexRoute: typeof DashboardProposalIndexRoute
+  DashboardTemplatesIndexRoute: typeof DashboardTemplatesIndexRoute
+  DashboardWizardIndexRoute: typeof DashboardWizardIndexRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardSettingsRouteRoute: DashboardSettingsRouteRouteWithChildren,
+  DashboardBrand_syncRoute: DashboardBrand_syncRoute,
+  DashboardPricing_engineRoute: DashboardPricing_engineRoute,
+  DashboardSaved_proposalsRoute: DashboardSaved_proposalsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+  DashboardTemplatesTnameRoute: DashboardTemplatesTnameRoute,
+  DashboardProposalIndexRoute: DashboardProposalIndexRoute,
+  DashboardTemplatesIndexRoute: DashboardTemplatesIndexRoute,
+  DashboardWizardIndexRoute: DashboardWizardIndexRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRoute,
   CareersRoute: CareersRoute,
@@ -348,7 +688,6 @@ const rootRouteChildren: RootRouteChildren = {
   ShowcaseRoute: ShowcaseRoute,
   TemplatesRoute: TemplatesRoute,
   TermsRoute: TermsRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   SignupIndexRoute: SignupIndexRoute,
 }
