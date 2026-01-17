@@ -1,47 +1,47 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { FileText, MoreHorizontal, Plus } from "lucide-react";
+import { FileText, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/dashboard/saved_proposals")({
   component: SavedProposalsView,
 });
 
-const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
-  <tr
-    onClick={onView}
-    className="group hover:bg-white/2 transition-all duration-300 cursor-pointer border-b border-white/5 last:border-0"
-  >
-    <td className="px-8 py-5">
-      <div className="flex flex-col">
-        <span className="font-bold text-white group-hover:text-accent-indigo transition-colors duration-300">
-          {title}
-        </span>
-        <span className="text-[10px] text-gray-500 mt-0.5">{time}</span>
-      </div>
-    </td>
-    <td className="px-8 py-5 text-gray-400 font-medium">{client}</td>
-    <td className="px-8 py-5 font-bold text-white">{value}</td>
-    <td className="px-8 py-5">
-      <span
-        className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${
-          status === "Accepted"
-            ? "text-accent-mint border-accent-mint/30 bg-accent-mint/5"
-            : status === "Sent"
-              ? "text-blue-400 border-blue-400/30 bg-blue-400/5"
-              : "text-gray-500 border-white/10 bg-white/5"
-        }`}
-      >
-        {status}
-      </span>
-    </td>
-    <td className="px-8 py-5 text-right">
-      <div className="flex justify-end gap-2">
-        <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-all duration-300">
-          <MoreHorizontal size={16} />
-        </button>
-      </div>
-    </td>
-  </tr>
-);
+// const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
+//   <tr
+//     onClick={onView}
+//     className="group hover:bg-white/2 transition-all duration-300 cursor-pointer border-b border-white/5 last:border-0"
+//   >
+//     <td className="px-8 py-5">
+//       <div className="flex flex-col">
+//         <span className="font-bold text-white group-hover:text-accent-indigo transition-colors duration-300">
+//           {title}
+//         </span>
+//         <span className="text-[10px] text-gray-500 mt-0.5">{time}</span>
+//       </div>
+//     </td>
+//     <td className="px-8 py-5 text-gray-400 font-medium">{client}</td>
+//     <td className="px-8 py-5 font-bold text-white">{value}</td>
+//     <td className="px-8 py-5">
+//       <span
+//         className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${
+//           status === "Accepted"
+//             ? "text-accent-mint border-accent-mint/30 bg-accent-mint/5"
+//             : status === "Sent"
+//               ? "text-blue-400 border-blue-400/30 bg-blue-400/5"
+//               : "text-gray-500 border-white/10 bg-white/5"
+//         }`}
+//       >
+//         {status}
+//       </span>
+//     </td>
+//     <td className="px-8 py-5 text-right">
+//       <div className="flex justify-end gap-2">
+//         <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-all duration-300">
+//           <MoreHorizontal size={16} />
+//         </button>
+//       </div>
+//     </td>
+//   </tr>
+// );
 
 function SavedProposalsView() {
   return (

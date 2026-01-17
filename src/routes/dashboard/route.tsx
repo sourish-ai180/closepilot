@@ -1,9 +1,11 @@
+import { auth } from "@/firebase";
 import {
   createFileRoute,
   Link,
   Outlet,
   useRouterState,
 } from "@tanstack/react-router";
+import { signOut } from "firebase/auth";
 import {
   BarChart,
   Bell,
@@ -72,8 +74,15 @@ function isActive(current: string, target: string) {
 }
 
 function Nav() {
+  const navigate = Route.useNavigate();
   const { location } = useRouterState();
   const path = location.pathname;
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    localStorage.removeItem("closepilot_user");
+    navigate({ to: "/" });
+  };
 
   return (
     <aside className="w-75">
@@ -111,7 +120,10 @@ function Nav() {
       </nav>
 
       <div className="p-8">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 transition-all duration-300">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-gray-500 hover:text-white hover:bg-white/5 transition-all duration-300"
+        >
           <LogOut size={18} />
           <span className="text-sm font-bold">Log out</span>
         </button>

@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Plus,
   FileText,
-  MoreHorizontal,
   ArrowRight,
   Rocket,
   Target,
@@ -11,10 +10,6 @@ import {
   Calculator,
   LayoutGrid,
 } from "lucide-react";
-import { auth } from "@/firebase";
-import { signOut } from "firebase/auth";
-import { useNavigate } from "@tanstack/react-router";
-
 export const Route = createFileRoute("/dashboard/")({
   component: RouteComponent,
 });
@@ -25,65 +20,65 @@ function RouteComponent() {
 
 // --- TYPES & INTERFACES ---
 
-type DashboardTab =
-  | "dashboard"
-  | "new-proposal"
-  | "templates"
-  | "saved"
-  | "settings"
-  | "wizard"
-  | "billing"
-  | "proposal-view"
-  | "pricing-engine"
-  | "brand-sync";
+// type DashboardTab =
+//   | "dashboard"
+//   | "new-proposal"
+//   | "templates"
+//   | "saved"
+//   | "settings"
+//   | "wizard"
+//   | "billing"
+//   | "proposal-view"
+//   | "pricing-engine"
+//   | "brand-sync";
 
-interface ProposalData {
-  id: string;
-  title: string;
-  client: string;
-  value: string;
-  status: "Sent" | "Draft" | "Accepted";
-  time: string;
-  category: string;
-}
+// interface ProposalData {
+//   id: string;
+//   title: string;
+//   client: string;
+//   value: string;
+//   status: "Sent" | "Draft" | "Accepted";
+//   time: string;
+//   category: string;
+// }
 
-const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
-  <tr
-    onClick={onView}
-    className="group hover:bg-white/2 transition-all duration-300 cursor-pointer border-b border-white/5 last:border-0"
-  >
-    <td className="px-8 py-5">
-      <div className="flex flex-col">
-        <span className="font-bold text-white group-hover:text-accent-indigo transition-colors duration-300">
-          {title}
-        </span>
-        <span className="text-[10px] text-gray-500 mt-0.5">{time}</span>
-      </div>
-    </td>
-    <td className="px-8 py-5 text-gray-400 font-medium">{client}</td>
-    <td className="px-8 py-5 font-bold text-white">{value}</td>
-    <td className="px-8 py-5">
-      <span
-        className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${
-          status === "Accepted"
-            ? "text-accent-mint border-accent-mint/30 bg-accent-mint/5"
-            : status === "Sent"
-              ? "text-blue-400 border-blue-400/30 bg-blue-400/5"
-              : "text-gray-500 border-white/10 bg-white/5"
-        }`}
-      >
-        {status}
-      </span>
-    </td>
-    <td className="px-8 py-5 text-right">
-      <div className="flex justify-end gap-2">
-        <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-all duration-300">
-          <MoreHorizontal size={16} />
-        </button>
-      </div>
-    </td>
-  </tr>
-);
+// const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
+//   <tr
+//     onClick={onView}
+//     className="group hover:bg-white/2 transition-all duration-300 cursor-pointer border-b border-white/5 last:border-0"
+//   >
+//     <td className="px-8 py-5">
+//       <div className="flex flex-col">
+//         <span className="font-bold text-white group-hover:text-accent-indigo transition-colors duration-300">
+//           {title}
+//         </span>
+//         <span className="text-[10px] text-gray-500 mt-0.5">{time}</span>
+//       </div>
+//     </td>
+//     <td className="px-8 py-5 text-gray-400 font-medium">{client}</td>
+//     <td className="px-8 py-5 font-bold text-white">{value}</td>
+//     <td className="px-8 py-5">
+//       <span
+//         className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${
+//           status === "Accepted"
+//             ? "text-accent-mint border-accent-mint/30 bg-accent-mint/5"
+//             : status === "Sent"
+//               ? "text-blue-400 border-blue-400/30 bg-blue-400/5"
+//               : "text-gray-500 border-white/10 bg-white/5"
+//         }`}
+//       >
+//         {status}
+//       </span>
+//     </td>
+//     <td className="px-8 py-5 text-right">
+//       <div className="flex justify-end gap-2">
+//         <button className="p-2 hover:bg-white/5 rounded-lg text-gray-500 hover:text-white transition-all duration-300">
+//           <MoreHorizontal size={16} />
+//         </button>
+//       </div>
+//     </td>
+//   </tr>
+// );
 
 const StarterMission = ({
   icon: Icon,
@@ -121,77 +116,7 @@ const StarterMission = ({
   </Link>
 );
 
-const SavedProposalsView = ({ proposals, onView, onNew }: any) => (
-  <div className="p-8 max-w-6xl mx-auto animate-slide-up">
-    <div className="flex justify-between items-center mb-10">
-      <div>
-        <h2 className="text-3xl font-bold mb-2">Saved Proposals</h2>
-        <p className="text-gray-500 text-sm">
-          Manage your archive of sent and draft proposals.
-        </p>
-      </div>
-      <button
-        onClick={onNew}
-        className="flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-indigo text-white font-bold text-sm hover:shadow-xl hover:shadow-accent-indigo/10 transition-all duration-300 hover:scale-[1.02]"
-      >
-        <Plus size={18} /> Launch Action: Create New
-      </button>
-    </div>
-
-    {proposals.length > 0 ? (
-      <div className="rounded-3xl border border-white/5 bg-[#13161F] overflow-hidden transition-all duration-300 shadow-2xl">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="text-[10px] text-gray-500 uppercase tracking-widest border-b border-white/5 bg-white/[0.01]">
-              <th className="px-8 py-5">Project Name</th>
-              <th className="px-8 py-5">Client</th>
-              <th className="px-8 py-5">Value</th>
-              <th className="px-8 py-5">Status</th>
-              <th className="px-8 py-5 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5 text-sm">
-            {proposals.map((p: any) => (
-              <ActivityRow
-                key={p.id}
-                title={p.title}
-                client={p.client}
-                value={p.value}
-                status={p.status}
-                time={p.time}
-                onView={() => onView(p)}
-              />
-            ))}
-          </tbody>
-        </table>
-      </div>
-    ) : (
-      <div className="py-20 flex flex-col items-center justify-center text-center">
-        <div className="w-20 h-20 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 text-gray-600 transition-all duration-300 hover:scale-110 hover:border-accent-indigo/30">
-          <FileText size={40} />
-        </div>
-        <h3 className="text-xl font-bold mb-2">No proposals yet</h3>
-        <button
-          onClick={onNew}
-          className="px-8 py-3 rounded-xl bg-white text-navy-900 font-bold hover:bg-gray-200 transition-all duration-300 shadow-xl hover:scale-105"
-        >
-          Launch Action: Create First Draft
-        </button>
-      </div>
-    )}
-  </div>
-);
-
-const DashboardHome = ({
-  proposals,
-  onNavigate,
-  onViewProposal,
-}: {
-  proposals: ProposalData[];
-  onNavigate: (tab: DashboardTab) => void;
-  onUseTemplate: (id: string) => void;
-  onViewProposal: (p: ProposalData) => void;
-}) => (
+const DashboardHome = () => (
   <div className="p-8 space-y-14 animate-slide-up">
     {/* === HERO DASHBOARD CARDS (LANDING STYLE) === */}
     <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1fr] gap-8">
@@ -268,7 +193,6 @@ const DashboardHome = ({
         {/* PRO TEMPLATES */}
         <Link to="/dashboard/templates">
           <div
-            onClick={() => onNavigate("templates")}
             className="group cursor-pointer glass border border-white/5 rounded-3xl p-8
       transition-all duration-500 ease-out
       hover:translate-y-[-3px]
@@ -346,16 +270,15 @@ const DashboardHome = ({
     <div className="space-y-6">
       <div className="flex items-end justify-between px-2">
         <h3 className="text-lg font-bold text-gray-300">Recent Activity</h3>
-        <button
-          onClick={() => onNavigate("saved")}
-          className="text-xs font-bold text-gray-500 hover:text-accent-indigo transition-colors flex items-center gap-1"
-        >
-          View all <ArrowRight size={14} />
-        </button>
+        <Link to="/dashboard/saved">
+          <button className="text-xs font-bold text-gray-500 hover:text-accent-indigo transition-colors flex items-center gap-1">
+            View all <ArrowRight size={14} />
+          </button>
+        </Link>
       </div>
 
       <div className="rounded-[2rem] border border-white/5 bg-[#13161F] overflow-hidden shadow-2xl">
-        {proposals.length > 0 ? (
+        {/*proposals?.length > 0 ? (
           <table className="w-full">
             <tbody className="divide-y divide-white/5">
               {proposals.slice(0, 3).map((p) => (
@@ -372,13 +295,13 @@ const DashboardHome = ({
             </tbody>
           </table>
         ) : (
-          <div className="py-12 flex flex-col items-center text-center opacity-40">
-            <FileText size={32} className="mb-3 text-gray-600" />
-            <p className="text-sm font-medium text-gray-500">
-              No active proposals found.
-            </p>
-          </div>
-        )}
+        ) */}
+        <div className="py-12 flex flex-col items-center text-center opacity-40">
+          <FileText size={32} className="mb-3 text-gray-600" />
+          <p className="text-sm font-medium text-gray-500">
+            No active proposals found.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -387,69 +310,12 @@ const DashboardHome = ({
 // --- MAIN DASHBOARD COMPONENT ---
 
 const Dashboard: React.FC = () => {
-  const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<DashboardTab>("dashboard");
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
-    null,
-  );
-  const [viewingProposal, setViewingProposal] = useState<ProposalData | null>(
-    null,
-  );
-  const [userName, setUserName] = useState("sourishkundu1122");
-  const [proposals] = useState<ProposalData[]>([]);
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("closepilot_user");
-    if (storedUser) {
-      try {
-        const user = JSON.parse(storedUser);
-        if (user?.name) setUserName(user.name);
-      } catch (e) {
-        console.error("Failed to parse stored user", e);
-      }
-    }
-  }, []);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    localStorage.removeItem("closepilot_user");
-    navigate({ to: "/" });
-  };
-
-  const handleUseTemplate = (id: string) => {
-    setSelectedTemplateId(id);
-    setActiveTab("wizard");
-  };
-
-  const handleViewProposal = (proposal: ProposalData) => {
-    setViewingProposal(proposal);
-    setActiveTab("proposal-view");
-  };
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "saved":
-        return (
-          <SavedProposalsView
-            proposals={proposals}
-            onView={handleViewProposal}
-            onNew={() => setActiveTab("new-proposal")}
-          />
-        );
-    }
-  };
-
   return (
     <div className="min-h-screen w-full bg-[#080B13] text-white font-sans flex overflow-hidden selection:bg-accent-indigo selection:text-white">
       {/* SIDEBAR - Styled to match screenshot */}
 
       <div className="flex-1 w-full overflow-y-auto custom-scrollbar bg-[#0A0D16]">
-        <DashboardHome
-          proposals={proposals}
-          onNavigate={setActiveTab}
-          onUseTemplate={handleUseTemplate}
-          onViewProposal={handleViewProposal}
-        />
+        <DashboardHome />
       </div>
     </div>
   );

@@ -10,7 +10,6 @@ const CreationCard = ({
   title,
   desc,
   btnText,
-  color,
   btnColor,
   onClick,
 }: any) => (
@@ -42,7 +41,7 @@ const CreationCard = ({
   </div>
 );
 
-function NewProposalView({ onUseTemplate }: any) {
+function NewProposalView() {
   const navigate = Route.useNavigate();
   return (
     <div className="p-8 max-w-7xl mx-auto animate-slide-up">

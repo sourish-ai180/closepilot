@@ -54,7 +54,7 @@ function RouteComponent() {
     setIsGenerating(true);
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-      const prompt = `Generate a professional proposal for "${formData.clientName}" in the category "${config.cat}". Details: ${JSON.stringify(formData)}`;
+      const prompt = `Generate a professional proposal for "${formData.clientName}" in the category. Details: ${JSON.stringify(formData)}`;
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: prompt,

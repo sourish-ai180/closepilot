@@ -26,6 +26,7 @@ import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardSaved_proposalsRouteImport } from './routes/dashboard/saved_proposals'
+import { Route as DashboardSavedRouteImport } from './routes/dashboard/saved'
 import { Route as DashboardPricing_engineRouteImport } from './routes/dashboard/pricing_engine'
 import { Route as DashboardBrand_syncRouteImport } from './routes/dashboard/brand_sync'
 import { Route as DashboardSettingsRouteRouteImport } from './routes/dashboard/settings/route'
@@ -126,6 +127,11 @@ const DashboardSaved_proposalsRoute =
     path: '/saved_proposals',
     getParentRoute: () => DashboardRouteRoute,
   } as any)
+const DashboardSavedRoute = DashboardSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 const DashboardPricing_engineRoute = DashboardPricing_engineRouteImport.update({
   id: '/pricing_engine',
   path: '/pricing_engine',
@@ -214,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard/brand_sync': typeof DashboardBrand_syncRoute
   '/dashboard/pricing_engine': typeof DashboardPricing_engineRoute
+  '/dashboard/saved': typeof DashboardSavedRoute
   '/dashboard/saved_proposals': typeof DashboardSaved_proposalsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/login': typeof LoginIndexRoute
@@ -244,6 +251,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/dashboard/brand_sync': typeof DashboardBrand_syncRoute
   '/dashboard/pricing_engine': typeof DashboardPricing_engineRoute
+  '/dashboard/saved': typeof DashboardSavedRoute
   '/dashboard/saved_proposals': typeof DashboardSaved_proposalsRoute
   '/dashboard': typeof DashboardIndexRoute
   '/login': typeof LoginIndexRoute
@@ -277,6 +285,7 @@ export interface FileRoutesById {
   '/dashboard/settings': typeof DashboardSettingsRouteRouteWithChildren
   '/dashboard/brand_sync': typeof DashboardBrand_syncRoute
   '/dashboard/pricing_engine': typeof DashboardPricing_engineRoute
+  '/dashboard/saved': typeof DashboardSavedRoute
   '/dashboard/saved_proposals': typeof DashboardSaved_proposalsRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/login/': typeof LoginIndexRoute
@@ -311,6 +320,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/brand_sync'
     | '/dashboard/pricing_engine'
+    | '/dashboard/saved'
     | '/dashboard/saved_proposals'
     | '/dashboard/'
     | '/login'
@@ -341,6 +351,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard/brand_sync'
     | '/dashboard/pricing_engine'
+    | '/dashboard/saved'
     | '/dashboard/saved_proposals'
     | '/dashboard'
     | '/login'
@@ -373,6 +384,7 @@ export interface FileRouteTypes {
     | '/dashboard/settings'
     | '/dashboard/brand_sync'
     | '/dashboard/pricing_engine'
+    | '/dashboard/saved'
     | '/dashboard/saved_proposals'
     | '/dashboard/'
     | '/login/'
@@ -528,6 +540,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSaved_proposalsRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/saved': {
+      id: '/dashboard/saved'
+      path: '/saved'
+      fullPath: '/dashboard/saved'
+      preLoaderRoute: typeof DashboardSavedRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
     '/dashboard/pricing_engine': {
       id: '/dashboard/pricing_engine'
       path: '/pricing_engine'
@@ -650,6 +669,7 @@ interface DashboardRouteRouteChildren {
   DashboardSettingsRouteRoute: typeof DashboardSettingsRouteRouteWithChildren
   DashboardBrand_syncRoute: typeof DashboardBrand_syncRoute
   DashboardPricing_engineRoute: typeof DashboardPricing_engineRoute
+  DashboardSavedRoute: typeof DashboardSavedRoute
   DashboardSaved_proposalsRoute: typeof DashboardSaved_proposalsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardTemplatesTnameRoute: typeof DashboardTemplatesTnameRoute
@@ -662,6 +682,7 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardSettingsRouteRoute: DashboardSettingsRouteRouteWithChildren,
   DashboardBrand_syncRoute: DashboardBrand_syncRoute,
   DashboardPricing_engineRoute: DashboardPricing_engineRoute,
+  DashboardSavedRoute: DashboardSavedRoute,
   DashboardSaved_proposalsRoute: DashboardSaved_proposalsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardTemplatesTnameRoute: DashboardTemplatesTnameRoute,
