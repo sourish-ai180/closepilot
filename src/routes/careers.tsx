@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/SectionHeader";

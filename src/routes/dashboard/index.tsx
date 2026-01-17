@@ -5,8 +5,6 @@ import {
   Plus,
   FileText,
   BarChart,
-  PieChart,
-  Settings,
   Search,
   Bell,
   ChevronRight,
@@ -17,25 +15,15 @@ import {
   Video,
   Sparkles,
   ArrowRight,
-  Clock,
-  MoreVertical,
-  Edit3,
-  Copy,
-  Download,
   LogOut,
-  Lock,
   Wand2,
   Send,
   ArrowLeft,
   Calendar,
   DollarSign,
-  Gavel,
   Trash2,
-  GripVertical,
-  PlusCircle,
   CreditCard,
   ShieldCheck,
-  History,
   ExternalLink,
   Loader2,
   Palette,
@@ -43,26 +31,17 @@ import {
   Briefcase,
   Star,
   Eye,
-  MousePointer2,
-  Share2,
-  Printer,
   CheckCircle,
-  AlertCircle,
   Rocket,
   Target,
   Zap,
-  Filter,
   User,
   Shield,
   Calculator,
   Globe,
-  TrendingUp,
-  Users,
-  Layers,
   Lightbulb,
   FilePlus,
   ZapOff,
-  PlayCircle,
   Upload,
   Save,
   Check,
@@ -74,6 +53,9 @@ import {
   BellRing,
   Smartphone,
   LayoutGrid,
+  Download,
+  type LucideIcon,
+  Settings,
 } from "lucide-react";
 import { auth } from "@/firebase";
 import { signOut } from "firebase/auth";
@@ -118,7 +100,7 @@ interface TemplateConfig {
   id: string;
   label: string;
   cat: string;
-  icon: any;
+  icon: LucideIcon;
   color: string;
   bg: string;
   description: string;
@@ -322,7 +304,7 @@ const SidebarLink = ({
   active,
   onClick,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   active: boolean;
   onClick: () => void;
