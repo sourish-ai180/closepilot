@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Layout, Plus, FileText, BarChart, PieChart, Settings, Search, Bell, ChevronRight,
-  MoreHorizontal, Megaphone, Image, Code, Video, Sparkles, ArrowRight, Clock,
-  MoreVertical, Edit3, Copy, Download, LogOut, Lock, Wand2, Send, ArrowLeft, Calendar,
-  DollarSign, Gavel, Trash2, GripVertical, PlusCircle, CreditCard, ShieldCheck, History, ExternalLink, Loader2, Palette, CheckCircle2,
-  Briefcase, Star, Eye, MousePointer2, Share2, Printer, CheckCircle, AlertCircle, Rocket, Target, Zap, Filter, User, Shield, Calculator, Globe, TrendingUp, Users,
-  Layers, Lightbulb, FilePlus, ZapOff, PlayCircle, Upload, Save, Check, Info, Phone, Mail, Link as LinkIcon, Camera, BellRing, Smartphone, LayoutGrid
+  Layout, Plus, FileText, BarChart, Settings, Search, Bell, ChevronRight,
+  MoreHorizontal, Megaphone, Image, Code, Video, Sparkles, ArrowRight,
+  Download, LogOut, Wand2, Send, ArrowLeft, Calendar,
+  DollarSign, Trash2, CreditCard, ShieldCheck, ExternalLink, Loader2, Palette, CheckCircle2,
+  Briefcase, Star, Eye, CheckCircle, Rocket, Target, Zap, Shield, Calculator, Globe,
+  Lightbulb, FilePlus, ZapOff, Upload, Save, Check, Info, Phone, Mail, Link as LinkIcon, Camera, BellRing, Smartphone, LayoutGrid, User
 } from 'lucide-react';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
@@ -143,8 +143,8 @@ const SidebarLink = ({ icon: Icon, label, active, onClick }: { icon: any, label:
   <button
     onClick={onClick}
     className={`w-full flex items-center gap-3 px-4 py-3 rounded-full transition-all duration-300 group ${active
-        ? 'bg-gradient-to-r from-[#5D5FEF] to-[#7C3AED] text-white shadow-lg shadow-accent-indigo/30'
-        : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.03]'
+      ? 'bg-gradient-to-r from-[#5D5FEF] to-[#7C3AED] text-white shadow-lg shadow-accent-indigo/30'
+      : 'text-gray-500 hover:text-gray-300 hover:bg-white/[0.03]'
       }`}
   >
     <Icon size={18} className={`transition-all duration-300 ${active ? 'text-white' : 'group-hover:text-accent-indigo'}`} />
@@ -184,8 +184,8 @@ const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
     <td className="px-8 py-5 font-bold text-white">{value}</td>
     <td className="px-8 py-5">
       <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border uppercase tracking-wider ${status === 'Accepted' ? 'text-accent-mint border-accent-mint/30 bg-accent-mint/5' :
-          status === 'Sent' ? 'text-blue-400 border-blue-400/30 bg-blue-400/5' :
-            'text-gray-500 border-white/10 bg-white/5'
+        status === 'Sent' ? 'text-blue-400 border-blue-400/30 bg-blue-400/5' :
+          'text-gray-500 border-white/10 bg-white/5'
         }`}>
         {status}
       </span>
@@ -200,7 +200,7 @@ const ActivityRow = ({ title, client, value, status, time, onView }: any) => (
   </tr>
 );
 
-const CreationCard = ({ icon: Icon, title, desc, btnText, color, btnColor, onClick }: any) => (
+const CreationCard = ({ icon: Icon, title, desc, btnText, btnColor, onClick }: any) => (
   <div
     onClick={onClick}
     className={`p-10 rounded-3xl bg-[#13161F] border border-white/5 hover:border-accent-indigo/30 hover:shadow-[0_0_50px_rgba(93,95,239,0.15)] transition-all duration-700 ease-in-out cursor-pointer group relative overflow-hidden`}
@@ -904,12 +904,10 @@ const SettingsPanel = ({ onManageBilling }: any) => {
 const DashboardHome = ({
   proposals,
   onNavigate,
-  onUseTemplate,
   onViewProposal
 }: {
   proposals: ProposalData[];
   onNavigate: (tab: DashboardTab) => void;
-  onUseTemplate: (id: string) => void;
   onViewProposal: (p: ProposalData) => void;
 }) => (
   <div className="p-8 space-y-14 animate-slide-up">
@@ -1309,7 +1307,8 @@ const Dashboard: React.FC = () => {
 
     switch (activeTab) {
       case 'dashboard':
-        return <DashboardHome proposals={proposals} onNavigate={setActiveTab} onUseTemplate={handleUseTemplate} onViewProposal={handleViewProposal} />;
+        return <DashboardHome proposals={proposals} onNavigate={setActiveTab} onViewProposal={handleViewProposal} />;
+
       case 'new-proposal':
         return <NewProposalView onNavigate={setActiveTab} onUseTemplate={handleUseTemplate} />;
       case 'wizard':
@@ -1330,7 +1329,8 @@ const Dashboard: React.FC = () => {
       case 'brand-sync':
         return <BrandSyncView onBack={backToDash} />;
       default:
-        return <DashboardHome proposals={proposals} onNavigate={setActiveTab} onUseTemplate={handleUseTemplate} onViewProposal={handleViewProposal} />;
+        return <DashboardHome proposals={proposals} onNavigate={setActiveTab} onViewProposal={handleViewProposal} />;
+
     }
   };
 

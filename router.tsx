@@ -1,4 +1,4 @@
-import { createRouter, createRoute, createRootRoute, RouterProvider, Outlet } from '@tanstack/react-router';
+import { createRouter, createRoute, createRootRoute, Outlet } from '@tanstack/react-router';
 import LandingPage from './LandingPage';
 import Dashboard from './components/Dashboard';
 import FeaturesPage from './FeaturesPage';
@@ -14,8 +14,8 @@ import PrivacyPage from './PrivacyPage';
 import TermsPage from './TermsPage';
 import CookiePage from './CookiePage';
 import ShowcasePage from './ShowcasePage';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+
+
 
 // Define the root route (can act as a layout if needed, but for now just renders Outlet)
 const rootRoute = createRootRoute({

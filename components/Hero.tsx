@@ -6,10 +6,7 @@ import {
   Calculator,
   Layers,
   ShieldCheck,
-  CheckCircle2,
-  Zap,
-  ChevronRight,
-  LayoutGrid
+  ChevronRight
 } from 'lucide-react';
 import Button from './Button';
 import { useNavigate } from '@tanstack/react-router';
